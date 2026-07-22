@@ -310,6 +310,117 @@ const RECETTES = [
     ],
     steps:["Émincer le poulet en lamelles, assaisonner avec curry, sel, paprika.","Cuire le poulet à la poêle à feu vif jusqu'à légère coloration.","Préparer la sauce : mélanger fromage blanc 0% + curry + sel + jus de citron.","Ouvrir le pitta, garnir de salade et tomates.","Ajouter le poulet chaud et napper généreusement de sauce curry."]
   },
+  {
+    id:22, emoji:"🥧", category:"dejeuner_diner",
+    nom:"Quiche sans pâte",
+    description:"Toute la gourmandise de la quiche, sans la pâte qui plombe les calories.",
+    note:"Cuisson au four dans un plat huilé — pas besoin de pâte pour que ça tienne.",
+    ingredients:[
+      { nom:"Œufs entiers",      type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
+      { nom:"Blanc d'œuf",       type:"prot", prot:11, gluc:1,  lip:0,  g_ref:100 },
+      { nom:"Jambon / blanc dinde", type:"prot", prot:18, gluc:0, lip:2, g_ref:100 },
+      { nom:"Fromage (emmental)", type:"lip",  prot:28, gluc:0,  lip:30, g_ref:30,  max_g:40 },
+      { nom:"Légumes (poireaux, épinards)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Préchauffer le four à 180°C.","Battre les œufs entiers + blancs d'œuf dans un saladier.","Ajouter le jambon coupé en dés et le fromage râpé.","Verser dans un plat à gratin huilé, ajouter les légumes de saison.","Cuire au four 25-30 min jusqu'à ce que la quiche soit bien prise et dorée."]
+  },
+  {
+    id:23, emoji:"🥣", category:"petit_dej_collation",
+    nom:"Yaourt grec granola maison",
+    description:"Le croustillant du granola sans le sucre caché du commerce.",
+    note:"Toaster les flocons à sec fait toute la différence — ça donne le croquant du vrai granola.",
+    ingredients:[
+      { nom:"Yaourt grec 0%",    type:"prot", prot:10, gluc:4,  lip:0,  g_ref:200 },
+      { nom:"Flocons d'avoine toastés", type:"gluc", prot:13, gluc:68, lip:7, g_ref:40 },
+      { nom:"Amandes",           type:"lip",  prot:21, gluc:7,  lip:50, g_ref:10,  max_g:20 },
+      { nom:"Fruits rouges",     type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Faire toaster les flocons d'avoine à sec dans une poêle 3-4 min à feu moyen, en remuant.","Laisser refroidir complètement (ça devient croustillant en refroidissant).","Concasser grossièrement les amandes.","Verser le yaourt grec dans un bol, ajouter les flocons toastés froids et les amandes.","Ajouter les fruits rouges par-dessus juste avant de servir."]
+  },
+  {
+    id:24, emoji:"🍣", category:"dejeuner_diner",
+    nom:"Poke Bowl Saumon",
+    description:"Frais, coloré, ça change du poulet-riz habituel.",
+    note:"Saumon cru façon poke si ultra-frais, sinon snacké 1 min par face à la poêle.",
+    ingredients:[
+      { nom:"Saumon",            type:"prot", prot:20, gluc:0,  lip:13, g_ref:120 },
+      { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
+      { nom:"Avocat",            type:"lip",  prot:2,  gluc:2,  lip:15, g_ref:50,  max_g:100 },
+      { nom:"Edamame",           type:"fixe", prot:11, gluc:8,  lip:5,  g_ref:50,  fixe_label:"50g (fixe)" },
+      { nom:"Sauce soja",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Cuire le riz selon les instructions du paquet, laisser tiédir.","Couper le saumon en cubes. Si non ultra-frais, snacker 1 min par face à la poêle.","Décongeler les edamame (eau bouillante 3 min ou vapeur).","Couper l'avocat en tranches ou en dés.","Assembler le bowl : riz, saumon, avocat, edamame. Napper de sauce soja."]
+  },
+  {
+    id:25, emoji:"🍛", category:"dejeuner_diner",
+    nom:"Curry de Poisson Coco Light",
+    description:"Le curry version légère. Le lait de coco light change tout niveau calories.",
+    note:"Ne pas faire bouillir le poisson trop longtemps — 8-10 min suffisent, sinon il devient sec.",
+    ingredients:[
+      { nom:"Cabillaud / colin", type:"prot", prot:18, gluc:0,  lip:1,  g_ref:150 },
+      { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
+      { nom:"Lait de coco light",type:"lip",  prot:1,  gluc:3,  lip:5,  g_ref:100, max_g:150 },
+      { nom:"Curry en poudre",   type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Légumes (poivrons, oignons)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Cuire le riz selon les instructions du paquet.","Couper le poisson en gros morceaux.","Faire chauffer le lait de coco light avec le curry en poudre dans une poêle.","Ajouter le poisson et les légumes, laisser mijoter à couvert 8-10 min à feu doux.","Servir le curry sur le riz."]
+  },
+  {
+    id:26, emoji:"🥦", category:"dejeuner_diner",
+    nom:"Wok Bœuf Brocolis",
+    description:"Rapide, savoureux, et les brocolis passent bien mieux comme ça.",
+    note:"Cuisson à feu vif et rapide — le bœuf doit rester tendre, pas bouilli.",
+    ingredients:[
+      { nom:"Bœuf émincé 5%",    type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
+      { nom:"Riz ou nouilles",   type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:90  },
+      { nom:"Huile de sésame",   type:"lip",  prot:0,  gluc:0,  lip:100,g_ref:5,   max_g:15 },
+      { nom:"Brocolis",          type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Sauce soja",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Cuire le riz ou les nouilles selon les instructions.","Blanchir les brocolis 3-4 min à l'eau bouillante ou à la vapeur.","Faire chauffer l'huile de sésame dans un wok ou une poêle à feu vif.","Saisir le bœuf émincé 2-3 min à feu vif en remuant constamment.","Ajouter les brocolis + sauce soja, mélanger 2 min à feu vif. Servir avec le riz ou les nouilles."]
+  },
+  {
+    id:27, emoji:"🌯", category:"dejeuner_diner",
+    nom:"Chicken Bowl Mexicain",
+    description:"Épicé, coloré, ça sort du riz-poulet-curry classique.",
+    note:"Les épices mexicaines font toute la différence — ne sois pas timide dessus.",
+    ingredients:[
+      { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:130 },
+      { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:80  },
+      { nom:"Haricots noirs",    type:"gluc", prot:9,  gluc:20, lip:1,  g_ref:60  },
+      { nom:"Avocat",            type:"lip",  prot:2,  gluc:2,  lip:15, g_ref:50,  max_g:80 },
+      { nom:"Maïs",              type:"fixe", prot:3,  gluc:19, lip:1,  g_ref:50,  fixe_label:"50g (fixe)" },
+      { nom:"Épices mexicaines (cumin, paprika, piment)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Cuire le riz selon les instructions du paquet.","Assaisonner le poulet avec cumin, paprika et piment, cuire à la poêle à feu vif.","Réchauffer les haricots noirs à la casserole ou au micro-ondes.","Couper l'avocat en dés.","Assembler le bowl : riz, poulet, haricots noirs, maïs, avocat."]
+  },
+  {
+    id:28, emoji:"🍮", category:"petit_dej_collation",
+    nom:"Pudding Protéiné au Pain",
+    description:"Anti-gaspi et gourmand. Utilise le pain qui traîne, version dessert protéiné.",
+    note:"Bien laisser le pain s'imbiber avant cuisson — c'est ce qui donne la texture fondante.",
+    ingredients:[
+      { nom:"Pain complet",      type:"gluc", prot:9,  gluc:46, lip:3,  g_ref:60  },
+      { nom:"Lait écrémé",       type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:150, max_g:250 },
+      { nom:"Œuf entier",        type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
+      { nom:"Whey vanille",      type:"prot", prot:80, gluc:5,  lip:2,  g_ref:25  },
+      { nom:"Sucralose + cannelle", type:"libre", prot:0, gluc:0, lip:0, g_ref:0  },
+    ],
+    steps:["Couper le pain en morceaux, tremper dans le lait 5 min pour bien l'imbiber.","Écraser le mélange pain-lait à la fourchette.","Battre l'œuf avec la whey diluée dans un peu d'eau, incorporer au mélange.","Ajouter sucralose et cannelle selon goût.","Verser dans un moule, cuire au four 180°C 25-30 min ou micro-ondes 3-4 min. Laisser refroidir avant de démouler."]
+  },
+  {
+    id:29, emoji:"🍯", category:"petit_dej_collation",
+    nom:"Flan sans pâte",
+    description:"Le flan pâtissier version coaching. Simple, léger, ça tient bien en collation.",
+    note:"Cuisson au bain-marie obligatoire — sinon le flan devient granuleux.",
+    ingredients:[
+      { nom:"Œuf entier",        type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
+      { nom:"Lait écrémé",       type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:250, max_g:350 },
+      { nom:"Whey vanille",      type:"prot", prot:80, gluc:5,  lip:2,  g_ref:20  },
+      { nom:"Sucralose + arôme vanille", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Préchauffer le four à 160°C.","Battre l'œuf avec la whey diluée dans un peu de lait.","Ajouter le reste du lait, le sucralose et l'arôme vanille, bien mélanger.","Verser dans un moule ou des ramequins.","Cuire au bain-marie 35-40 min jusqu'à prise. Laisser refroidir puis réfrigérer 2h minimum avant de démouler."]
+  },
 ];
 
 // ── SOLVEUR ADAPTATIF ──
