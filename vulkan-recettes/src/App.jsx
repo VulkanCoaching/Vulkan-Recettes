@@ -421,6 +421,89 @@ const RECETTES = [
     ],
     steps:["Préchauffer le four à 160°C.","Battre l'œuf avec la whey diluée dans un peu de lait.","Ajouter le reste du lait, le sucralose et l'arôme vanille, bien mélanger.","Verser dans un moule ou des ramequins.","Cuire au bain-marie 35-40 min jusqu'à prise. Laisser refroidir puis réfrigérer 2h minimum avant de démouler."]
   },
+  {
+    id:30, emoji:"🍝", category:"dejeuner_diner",
+    nom:"Pâtes à la Bolognaise",
+    description:"Le classique indémodable. Simple, efficace, tout le monde aime ça.",
+    note:"Laisse mijoter la sauce au moins 15 min — plus elle mijote, plus elle est bonne.",
+    ingredients:[
+      { nom:"Bœuf haché 5%",     type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
+      { nom:"Pâtes",             type:"gluc", prot:12, gluc:75, lip:1,  g_ref:80  },
+      { nom:"Parmesan",          type:"lip",  prot:35, gluc:0,  lip:28, g_ref:15,  max_g:20 },
+      { nom:"Sauce tomate",      type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Oignon / carottes", type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Cuire les pâtes selon les instructions du paquet.","Faire revenir l'oignon émincé, ajouter le bœuf haché, cuire à feu vif jusqu'à coloration.","Ajouter la sauce tomate et les carottes, saler, poivrer.","Laisser mijoter à couvert 15-20 min à feu doux.","Servir la sauce sur les pâtes, parsemer de parmesan râpé."]
+  },
+  {
+    id:31, emoji:"🍲", category:"dejeuner_diner",
+    nom:"Lasagnes",
+    description:"Le plat réconfortant par excellence, en version qui rentre dans le plan.",
+    note:"Laisse reposer 5 min à la sortie du four avant de découper — ça tient mieux.",
+    ingredients:[
+      { nom:"Bœuf haché 5%",       type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
+      { nom:"Feuilles de lasagne", type:"gluc", prot:12, gluc:70, lip:1,  g_ref:70  },
+      { nom:"Fromage râpé",        type:"lip",  prot:28, gluc:0,  lip:30, g_ref:25,  max_g:35 },
+      { nom:"Crème légère",        type:"lip",  prot:3,  gluc:3,  lip:4,  g_ref:50,  max_g:80 },
+      { nom:"Sauce tomate",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Préchauffer le four à 180°C.","Faire revenir le bœuf haché avec oignon, ajouter la sauce tomate, mijoter 15 min.","Dans un plat, alterner : couche de sauce bolognaise, feuilles de lasagne, un peu de crème légère.","Répéter les couches, terminer par de la crème et le fromage râpé sur le dessus.","Cuire au four 30-35 min jusqu'à ce que le dessus soit doré et gratiné."]
+  },
+  {
+    id:32, emoji:"🧀", category:"dejeuner_diner",
+    nom:"Gratin de Pâtes",
+    description:"Pâtes + jambon + fromage gratiné. Le comfort food qui rentre dans les calories.",
+    note:"Ne cuis pas les pâtes complètement — elles finissent de cuire au four.",
+    ingredients:[
+      { nom:"Pâtes",              type:"gluc", prot:12, gluc:75, lip:1,  g_ref:90  },
+      { nom:"Jambon / blanc dinde",type:"prot", prot:18, gluc:0,  lip:2,  g_ref:100 },
+      { nom:"Crème légère",       type:"lip",  prot:3,  gluc:3,  lip:4,  g_ref:80,  max_g:120 },
+      { nom:"Fromage râpé",       type:"lip",  prot:28, gluc:0,  lip:30, g_ref:20,  max_g:30 },
+      { nom:"Légumes (brocolis, épinards)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Préchauffer le four à 200°C.","Cuire les pâtes 2 min de moins que le temps indiqué (elles finiront de cuire au four).","Couper le jambon en dés, mélanger avec les pâtes et la crème légère dans un plat à gratin.","Ajouter les légumes si utilisés, parsemer de fromage râpé.","Cuire au four 15-20 min jusqu'à ce que le dessus soit doré et gratiné."]
+  },
+  {
+    id:33, emoji:"🥔", category:"dejeuner_diner",
+    nom:"Gratin Dauphinois au Jambon",
+    description:"Le classique français, avec du jambon pour en faire un repas complet.",
+    note:"Coupe les pommes de terre le plus fin possible — c'est ce qui donne la texture fondante.",
+    ingredients:[
+      { nom:"Pommes de terre",     type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:250 },
+      { nom:"Jambon / blanc dinde",type:"prot", prot:18, gluc:0,  lip:2,  g_ref:120 },
+      { nom:"Crème légère",        type:"lip",  prot:3,  gluc:3,  lip:4,  g_ref:100, max_g:150 },
+      { nom:"Fromage râpé",        type:"lip",  prot:28, gluc:0,  lip:30, g_ref:20,  max_g:30 },
+      { nom:"Ail / muscade",       type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Préchauffer le four à 180°C.","Couper les pommes de terre en rondelles très fines (mandoline si possible).","Disposer une couche de pommes de terre dans un plat, ajouter le jambon émincé.","Verser la crème légère mélangée à l'ail et la muscade sur le dessus.","Parsemer de fromage râpé, cuire au four 45-50 min jusqu'à ce que les pommes de terre soient tendres et dorées."]
+  },
+  {
+    id:34, emoji:"🍜", category:"dejeuner_diner",
+    nom:"Soupe Poulet Légumes",
+    description:"Réconfortante, simple, et complète niveau macros malgré les apparences.",
+    note:"Mixe partiellement pour garder un peu de texture, ou totalement pour un velouté.",
+    ingredients:[
+      { nom:"Blanc de poulet",     type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
+      { nom:"Pommes de terre",     type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:150 },
+      { nom:"Crème légère",        type:"lip",  prot:3,  gluc:3,  lip:4,  g_ref:50,  max_g:80 },
+      { nom:"Légumes (carottes, poireaux, courgettes)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Bouillon / épices",   type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Couper les légumes et les pommes de terre, cuire dans le bouillon 20 min jusqu'à tendreté.","Cuire le poulet séparément à la poêle ou au bouillon, puis l'émietter.","Mixer la soupe totalement ou partiellement selon la texture voulue.","Ajouter le poulet émietté et la crème légère, mélanger.","Assaisonner selon goût et servir bien chaud."]
+  },
+  {
+    id:35, emoji:"🥚", category:"petit_dej_collation",
+    nom:"Œufs à la Coque + Pain",
+    description:"Le classique simple et rapide. Jaune coulant, mouillettes, rien de plus.",
+    note:"3 min pour un jaune bien coulant, 5-6 min pour un jaune plus pris.",
+    ingredients:[
+      { nom:"Œufs entiers",  type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
+      { nom:"Pain",          type:"gluc", prot:9,  gluc:46, lip:3,  g_ref:60  },
+      { nom:"Beurre léger",  type:"lip",  prot:0,  gluc:0,  lip:60, g_ref:5,   max_g:15 },
+      { nom:"Sel / poivre",  type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Porter une casserole d'eau à ébullition.","Plonger délicatement les œufs, cuire 3 min pour un jaune coulant (5-6 min pour plus cuit).","Pendant ce temps, couper le pain en mouillettes.","Tartiner légèrement de beurre léger si désiré.","Écaler le haut de l'œuf et tremper les mouillettes dans le jaune."]
+  },
 ];
 
 // ── SOLVEUR ADAPTATIF ──
