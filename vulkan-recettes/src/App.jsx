@@ -138,7 +138,7 @@ const RECETTES = [
     note:"Feu moyen-doux pour bien cuire l'intérieur sans brûler l'extérieur.",
     ingr:["pain","oeuf"], tags:["sucre","reconfort"],
     ingredients:[
-      { nom:"Brioche (tranche)", type:"fixe", prot:8,  gluc:50, lip:8,  g_ref:60,  fixe_label:"1 tranche (fixe)" },
+      { nom:"Brioche Harrys allégée (tranche)", type:"fixe", prot:8.5, gluc:46, lip:10, g_ref:27,  unit_scalable:true, max_units:2, unit_name:"tranche" },
       { nom:"Œuf entier",        type:"fixe", prot:13, gluc:1,  lip:10, g_ref:50,  fixe_label:"1 œuf (fixe)" },
       { nom:"Blanc d'œuf",       type:"prot", prot:11, gluc:1,  lip:0,  g_ref:60  },
       { nom:"Whey (topping)",    type:"prot", prot:80, gluc:5,  lip:2,  g_ref:20  },
@@ -260,7 +260,7 @@ const RECETTES = [
       { nom:"Steak haché 5%",    type:"prot", prot:22, gluc:0,  lip:5,  g_ref:100 },
       { nom:"Bacon",             type:"prot", prot:20, gluc:0,  lip:10, g_ref:20  },
       { nom:"Pommes de terre",   type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:200 },
-      { nom:"Pain burger",       type:"fixe", prot:8,  gluc:42, lip:4,  g_ref:80,  fixe_label:"1 pain (fixe)" },
+      { nom:"Pain burger Jacquet",  type:"fixe", prot:8.1,gluc:47, lip:4.7,g_ref:62.5,unit_scalable:true, max_units:2, unit_name:"pain" },
       { nom:"Cheddar",           type:"fixe", prot:5,  gluc:0,  lip:7,  g_ref:20,  fixe_label:"1 tranche (fixe)" },
       { nom:"Sauce zéro",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
       { nom:"Tomates / oignons", type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
@@ -307,7 +307,7 @@ const RECETTES = [
     ingredients:[
       { nom:"Blanc de poulet",  type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
       { nom:"Pommes de terre",  type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:150 },
-      { nom:"Wrap (tortilla)",  type:"fixe", prot:8,  gluc:55, lip:5,  g_ref:60,  fixe_label:"1 wrap (fixe)" },
+      { nom:"Wrap fin Old El Paso", type:"fixe", prot:8.6,gluc:53.2,lip:5.5,g_ref:32,  unit_scalable:true, max_units:2, unit_name:"wrap" },
       { nom:"Crème légère 4%", type:"lip",  prot:3,  gluc:3,  lip:4,  g_ref:50,  max_g:80 },
       { nom:"Comté",            type:"lip",  prot:27, gluc:0,  lip:33, g_ref:15,  max_g:25 },
       { nom:"Sauce zéro",       type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
@@ -337,7 +337,7 @@ const RECETTES = [
     note:"Privilégie le pain complet ou céréales pour l'index glycémique.",
     ingr:["porc_jambon","pain","fromage"], tags:["rapide","leger"],
     ingredients:[
-      { nom:"Pain complet",         type:"gluc", prot:9,  gluc:46, lip:3,  g_ref:80  },
+      { nom:"Pain de mie complet La Boulangère", type:"gluc", prot:10, gluc:39, lip:1.9, g_ref:80  },
       { nom:"Jambon / blanc dinde", type:"prot", prot:18, gluc:0,  lip:2,  g_ref:100 },
       { nom:"Fromage (emmental)",   type:"lip",  prot:28, gluc:0,  lip:30, g_ref:30,  max_g:40 },
       { nom:"Tomates / salade",     type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
@@ -353,8 +353,8 @@ const RECETTES = [
     ingr:["poulet","pain"], tags:["rapide","leger"],
     ingredients:[
       { nom:"Blanc de poulet",  type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
-      { nom:"Pain pitta",       type:"fixe", prot:9,  gluc:55, lip:2,  g_ref:70,  fixe_label:"1 pitta (fixe)" },
-      { nom:"Fromage blanc 0%", type:"gluc", prot:8,  gluc:4,  lip:0,  g_ref:80  },
+      { nom:"Pain pitta",       type:"fixe", prot:9,  gluc:55, lip:2,  g_ref:70,  unit_scalable:true, max_units:2, unit_name:"pitta" },
+      { nom:"Fromage blanc 0%", type:"gluc", prot:8,  gluc:4,  lip:0,  g_ref:80,  max_g:100 },
       { nom:"Curry en poudre",  type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
       { nom:"Salade / tomates", type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
     ],
@@ -457,7 +457,7 @@ const RECETTES = [
     note:"Bien laisser le pain s'imbiber avant cuisson — c'est ce qui donne la texture fondante.",
     ingr:["pain","oeuf"], tags:["sucre","reconfort"],
     ingredients:[
-      { nom:"Pain complet",      type:"gluc", prot:9,  gluc:46, lip:3,  g_ref:60  },
+      { nom:"Pain de mie complet La Boulangère", type:"gluc", prot:10, gluc:39, lip:1.9, g_ref:60  },
       { nom:"Lait écrémé",       type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:150, max_g:250 },
       { nom:"Œuf entier",        type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
       { nom:"Whey vanille",      type:"prot", prot:80, gluc:5,  lip:2,  g_ref:25  },
@@ -590,16 +590,31 @@ function calcPortions(recette, cible_prot, cible_gluc, cible_lip) {
   const ALL_TYPES = ["prot","gluc","lip"];
   const MACRO_KEYS = ["prot","gluc","lip"];
 
+  // Calculer le nombre d'unités pour les ingrédients "fixe" quantifiables
+  // (pain burger, wrap, pitta, tranche de brioche...) — jamais de fraction, 1 ou 2 unités.
+  const fixeUnits = ings.map(ing => {
+    if (ing.type !== "fixe" || !ing.unit_scalable) return 1;
+    const maxU = ing.max_units || 2;
+    const glucPerUnit = ing.gluc * ing.g_ref / 100;
+    let units = glucPerUnit > 0 ? Math.round(cible_gluc / glucPerUnit) : 1;
+    units = Math.max(1, Math.min(maxU, units));
+    return units;
+  });
+
   // Séparer par catégorie
   const fixe  = ings.filter(i=>i.type==="fixe");
   const libre  = ings.filter(i=>i.type==="libre");
 
-  // Macros fixes
-  const fixeMacros = fixe.reduce((a,ing)=>({
-    prot: a.prot + ing.prot * ing.g_ref / 100,
-    gluc: a.gluc + ing.gluc * ing.g_ref / 100,
-    lip:  a.lip  + ing.lip  * ing.g_ref / 100,
-  }),{prot:0,gluc:0,lip:0});
+  // Macros fixes (en tenant compte du nombre d'unités choisi)
+  const fixeMacros = ings.reduce((a,ing,idx)=>{
+    if (ing.type!=="fixe") return a;
+    const g = ing.g_ref * fixeUnits[idx];
+    return {
+      prot: a.prot + ing.prot * g / 100,
+      gluc: a.gluc + ing.gluc * g / 100,
+      lip:  a.lip  + ing.lip  * g / 100,
+    };
+  },{prot:0,gluc:0,lip:0});
 
   // Cibles nettes (après déduction des fixes)
   const need = {
@@ -683,14 +698,18 @@ function calcPortions(recette, cible_prot, cible_gluc, cible_lip) {
   // Appliquer les ratios avec min/max
   const applyMax = (ing, g) => { let v = Math.max(0, g); if (ing.min_g) v = Math.max(v, ing.min_g); if (ing.max_g) v = Math.min(v, ing.max_g); return v; };
 
-  return ings.map(ing => {
+  return ings.map((ing, idx) => {
     if (ing.type==="libre") {
       return {...ing, g_calc:0, prot_calc:0, gluc_calc:0, lip_calc:0, kcal_calc:0};
     }
     if (ing.type==="fixe") {
-      const g = ing.g_ref;
+      const units = fixeUnits[idx];
+      const g = ing.g_ref * units;
       const p=Math.round(ing.prot*g/100), gc=Math.round(ing.gluc*g/100), l=Math.round(ing.lip*g/100);
-      return {...ing, g_calc:g, prot_calc:p, gluc_calc:gc, lip_calc:l, kcal_calc:Math.round((p+gc)*4+l*9)};
+      const label = ing.unit_scalable
+        ? `${units} ${ing.unit_name}${units>1?'s':''} (${Math.round(g)}g)`
+        : ing.fixe_label;
+      return {...ing, g_calc:Math.round(g), prot_calc:p, gluc_calc:gc, lip_calc:l, kcal_calc:Math.round((p+gc)*4+l*9), fixe_label:label, units};
     }
     const ratio = ratios[ing.type] || 1;
     const g_raw = ing.g_ref * ratio;
