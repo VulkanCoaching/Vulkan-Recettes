@@ -603,6 +603,108 @@ const RECETTES = [
     ],
     steps:["Porter une casserole d'eau à ébullition.","Plonger délicatement les œufs, cuire 3 min pour un jaune coulant (5-6 min pour plus cuit).","Pendant ce temps, couper le pain en mouillettes.","Tartiner légèrement de beurre léger si désiré.","Écaler le haut de l'œuf et tremper les mouillettes dans le jaune."]
   },
+  {
+    id:36, emoji:"🍤", category:"dejeuner_diner",
+    nom:"Pad Thai Crevettes",
+    description:"La version fruits de mer du pad thaï. Plus léger, tout aussi savoureux.",
+    ingr:["poisson","riz"], tags:["rapide"],
+    temps:"t30",
+    note:"Les crevettes cuisent très vite — 2-3 min suffisent, ne les laisse pas trop longtemps sinon elles deviennent caoutchouteuses.",
+    ingredients:[
+      { nom:"Nouilles de riz",   type:"gluc", prot:3,  gluc:80, lip:0,  g_ref:70  },
+      { nom:"Crevettes",         type:"prot", prot:20, gluc:0,  lip:1,  g_ref:130 },
+      { nom:"Œuf entier",        type:"fixe", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
+      { nom:"Cacahuètes",        type:"lip",  prot:26, gluc:16, lip:49, g_ref:15,  max_g:25 },
+      { nom:"Sauce soja sucrée", type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Légumes (pousses, oignon)", type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Tremper les nouilles de riz dans l'eau chaude 8-10 min, égoutter.","Cuire les crevettes 2-3 min à la poêle à feu vif jusqu'à ce qu'elles rosissent — ne pas trop cuire.","Pousser les crevettes sur le côté, casser l'œuf dans la poêle et brouiller.","Ajouter les nouilles égouttées + sauce soja sucrée, mélanger à feu vif 2 min.","Servir avec les cacahuètes concassées et les légumes crus par-dessus."]
+  },
+  {
+    id:37, emoji:"🐟", category:"dejeuner_diner",
+    nom:"Papillotes de Poisson",
+    description:"Léger, sain, et ça infuse tous les arômes pendant la cuisson.",
+    ingr:["poisson","riz"], tags:["leger","rapide"],
+    temps:"t30",
+    note:"Bien refermer la papillote pour que la vapeur reste à l'intérieur — c'est ce qui cuit et parfume le poisson.",
+    ingredients:[
+      { nom:"Cabillaud / colin", type:"prot", prot:18, gluc:0,  lip:1,  g_ref:150 },
+      { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
+      { nom:"Huile d'olive",     type:"lip",  prot:0,  gluc:0,  lip:100,g_ref:5,   max_g:15 },
+      { nom:"Légumes (courgettes, tomates)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Citron / herbes",   type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Préchauffer le four à 180°C.","Cuire le riz selon les instructions du paquet.","Disposer le poisson sur une feuille de papier cuisson ou d'aluminium avec les légumes coupés.","Ajouter un filet d'huile d'olive, du citron et des herbes, refermer hermétiquement la papillote.","Cuire au four 15-20 min. Servir avec le riz."]
+  },
+  {
+    id:38, emoji:"🧀", category:"dejeuner_diner",
+    nom:"Cordon Bleu Maison",
+    description:"Le vrai fait maison. Ça demande un peu plus de taf, mais ça change tout niveau calories.",
+    ingr:["poulet","porc_jambon","fromage","pdt"], tags:["familial","reconfort"],
+    temps:"t45",
+    note:"Le passage au congélateur 30 min est l'étape clé — sans ça le fromage fond et s'échappe à la cuisson.",
+    ingredients:[
+      { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:150 },
+      { nom:"Jambon",            type:"fixe", prot:18, gluc:0,  lip:2,  g_ref:20,  fixe_label:"1 tranche (fixe)" },
+      { nom:"Comté",             type:"fixe", prot:27, gluc:0,  lip:33, g_ref:20,  fixe_label:"1 tranche (fixe)" },
+      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:25,  fixe_label:"25g (fixe)" },
+      { nom:"Pommes de terre (frites)", type:"gluc", prot:2, gluc:17, lip:0, g_ref:200 },
+      { nom:"Fromage blanc 0% (pour tremper)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Épices",            type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Assaisonner le fromage blanc avec les épices de ton choix.","Aplatir le filet de poulet à l'aide d'un attendrisseur ou du dos d'une casserole.","Déposer la tranche de jambon et de comté au centre, replier le filet et bien refermer.","Filmer et mettre au congélateur 30 min — c'est ce qui permet au cordon bleu de bien tenir à la cuisson.","Tremper dans le fromage blanc épicé puis dans la panure panko.","Cuire au four 200°C 20-25 min ou air fryer 180°C 15-18 min jusqu'à doré. Servir avec les frites."]
+  },
+  {
+    id:39, emoji:"🍗", category:"dejeuner_diner",
+    nom:"Tenders de Poulet",
+    description:"Le cordon bleu en version simple et rapide. Sauce zéro obligatoire.",
+    ingr:["poulet","pdt"], tags:["rapide","familial"],
+    temps:"t30",
+    note:"Coupe le poulet en lanières régulières — ça cuit plus uniformément que des gros morceaux.",
+    ingredients:[
+      { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:150 },
+      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:25,  fixe_label:"25g (fixe)" },
+      { nom:"Pommes de terre (frites)", type:"gluc", prot:2, gluc:17, lip:0, g_ref:200 },
+      { nom:"Fromage blanc 0% (pour tremper)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Épices",            type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Légumes",           type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Sauce zéro",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Assaisonner le fromage blanc avec les épices de ton choix.","Couper le poulet en lanières régulières (tenders).","Tremper chaque lanière dans le fromage blanc épicé puis dans la panure panko.","Cuire au four 200°C 18-20 min ou air fryer 180°C 12-15 min jusqu'à doré.","Servir avec légumes, frites (ou riz) et sauce zéro."]
+  },
+  {
+    id:40, emoji:"🍚", category:"dejeuner_diner",
+    nom:"Riz Croustillant Thaï",
+    description:"Poulet pané + sauce crousti + riz. Le combo qui cartonne toujours.",
+    ingr:["poulet","riz"], tags:["reconfort","familial"],
+    temps:"t30",
+    note:"La sauce crousti : mayo allégée + sriracha, ajuste le piquant selon ton goût.",
+    ingredients:[
+      { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:130 },
+      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:25,  fixe_label:"25g (fixe)" },
+      { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
+      { nom:"Sauce crousti (mayo légère + sriracha)", type:"lip", prot:1, gluc:3, lip:35, g_ref:20, max_g:30 },
+      { nom:"Fromage blanc 0% (pour tremper)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Oignons frits / légumes", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+    ],
+    steps:["Assaisonner le fromage blanc, y tremper le poulet coupé en morceaux puis dans la panure panko.","Cuire au four 200°C 18-20 min ou air fryer 180°C 12-15 min jusqu'à doré.","Cuire le riz selon les instructions du paquet.","Préparer la sauce crousti : mélanger mayo allégée et sriracha selon le piquant voulu.","Dresser le riz, ajouter le poulet pané coupé en morceaux, napper de sauce crousti, ajouter oignons frits ou légumes."]
+  },
+  {
+    id:41, emoji:"🍠", category:"dejeuner_diner",
+    nom:"Hachis Parmentier de Patate Douce",
+    description:"Le classique revisité. La patate douce apporte du fondant et un peu de sucré.",
+    ingr:["boeuf","pdt"], tags:["reconfort","familial"],
+    temps:"t45",
+    note:"Écrase la patate douce encore chaude — ça donne une purée bien plus lisse.",
+    ingredients:[
+      { nom:"Bœuf haché 5%",     type:"prot", prot:22, gluc:0,  lip:5,  g_ref:150 },
+      { nom:"Patate douce",      type:"gluc", prot:2,  gluc:20, lip:0,  g_ref:250 },
+      { nom:"Fromage râpé",      type:"lip",  prot:28, gluc:0,  lip:30, g_ref:20,  max_g:30 },
+      { nom:"Oignons",           type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+      { nom:"Épices",            type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
+    ],
+    steps:["Éplucher et cuire la patate douce à l'eau ou à la vapeur 15-20 min jusqu'à tendre.","Écraser en purée pendant qu'elle est encore chaude.","Faire revenir le bœuf haché avec les oignons émincés, assaisonner.","Dans un plat à gratin, disposer le bœuf, recouvrir de purée de patate douce.","Parsemer de fromage râpé, cuire au four 200°C 15-20 min jusqu'à doré et gratiné."]
+  },
 ];
 
 // ── SOLVEUR ADAPTATIF ──
