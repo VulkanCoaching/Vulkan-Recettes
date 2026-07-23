@@ -647,9 +647,9 @@ const RECETTES = [
       { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:150 },
       { nom:"Jambon",            type:"fixe", prot:18, gluc:0,  lip:2,  g_ref:20,  fixe_label:"1 tranche (fixe)" },
       { nom:"Comté",             type:"fixe", prot:27, gluc:0,  lip:33, g_ref:20,  fixe_label:"1 tranche (fixe)" },
-      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:25,  fixe_label:"25g (fixe)" },
+      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:1,   ratio_of:"Blanc de poulet", ratio_pct:0.15 },
       { nom:"Pommes de terre (frites)", type:"gluc", prot:2, gluc:17, lip:0, g_ref:200 },
-      { nom:"Fromage blanc 0% (pour tremper)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Fromage blanc 0% (pour tremper)", type:"prot", prot:8, gluc:4, lip:0, g_ref:1, ratio_of:"Blanc de poulet", ratio_pct:0.15 },
       { nom:"Épices",            type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
     ],
     steps:["Assaisonner le fromage blanc avec les épices de ton choix.","Aplatir le filet de poulet à l'aide d'un attendrisseur ou du dos d'une casserole.","Déposer la tranche de jambon et de comté au centre, replier le filet et bien refermer.","Filmer et mettre au congélateur 30 min — c'est ce qui permet au cordon bleu de bien tenir à la cuisson.","Tremper dans le fromage blanc épicé puis dans la panure panko.","Cuire au four 200°C 20-25 min ou air fryer 180°C 15-18 min jusqu'à doré. Servir avec les frites."]
@@ -663,9 +663,9 @@ const RECETTES = [
     note:"Coupe le poulet en lanières régulières — ça cuit plus uniformément que des gros morceaux.",
     ingredients:[
       { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:150 },
-      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:25,  fixe_label:"25g (fixe)" },
+      { nom:"Panure panko",      type:"fixe", prot:10, gluc:70, lip:5,  g_ref:1,   ratio_of:"Blanc de poulet", ratio_pct:0.15 },
       { nom:"Pommes de terre (frites)", type:"gluc", prot:2, gluc:17, lip:0, g_ref:200 },
-      { nom:"Fromage blanc 0% (pour tremper)", type:"libre", prot:0, gluc:0, lip:0, g_ref:0 },
+      { nom:"Fromage blanc 0% (pour tremper)", type:"prot", prot:8, gluc:4, lip:0, g_ref:1, ratio_of:"Blanc de poulet", ratio_pct:0.15 },
       { nom:"Épices",            type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
       { nom:"Légumes",           type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
       { nom:"Sauce zéro",        type:"libre",prot:0,  gluc:0,  lip:0,  g_ref:0   },
@@ -726,118 +726,139 @@ function calcPortions(recette, cible_prot, cible_gluc, cible_lip) {
   const ings = recette.ingredients;
   const ALL_TYPES = ["prot","gluc","lip"];
   const MACRO_KEYS = ["prot","gluc","lip"];
+  const applyMax = (ing, g) => { let v = Math.max(0, g); if (ing.min_g) v = Math.max(v, ing.min_g); if (ing.max_g) v = Math.min(v, ing.max_g); return v; };
 
-  // Calculer le nombre d'unités pour les ingrédients "fixe" quantifiables
-  // (pain burger, wrap, pitta, tranche de brioche...) — jamais de fraction, 1 ou 2 unités.
-  const fixeUnits = ings.map(ing => {
-    if (ing.type !== "fixe" || !ing.unit_scalable) return 1;
-    const maxU = ing.max_units || 2;
-    const glucPerUnit = ing.gluc * ing.g_ref / 100;
-    let units = glucPerUnit > 0 ? Math.round(cible_gluc / glucPerUnit) : 1;
-    units = Math.max(1, Math.min(maxU, units));
-    return units;
-  });
+  // Ingrédients "ratio_of" : leur quantité dépend d'un autre ingrédient (ex: panure/fromage blanc liés au poulet)
+  // On les ignore en 1ère passe (contribution 0), puis on calcule leur poids réel une fois
+  // la quantité de l'ingrédient référencé connue, et on relance une 2e passe avec cette valeur figée.
+  const ratioIdxs = ings.map((ing,i)=> ing.ratio_of ? i : -1).filter(i=>i>=0);
 
-  // Séparer par catégorie
-  const fixe  = ings.filter(i=>i.type==="fixe");
-  const libre  = ings.filter(i=>i.type==="libre");
-
-  // Macros fixes (en tenant compte du nombre d'unités choisi)
-  const fixeMacros = ings.reduce((a,ing,idx)=>{
-    if (ing.type!=="fixe") return a;
-    const g = ing.g_ref * fixeUnits[idx];
-    return {
-      prot: a.prot + ing.prot * g / 100,
-      gluc: a.gluc + ing.gluc * g / 100,
-      lip:  a.lip  + ing.lip  * g / 100,
-    };
-  },{prot:0,gluc:0,lip:0});
-
-  // Cibles nettes (après déduction des fixes)
-  const need = {
-    prot: Math.max(0, cible_prot - fixeMacros.prot),
-    gluc: Math.max(0, cible_gluc - fixeMacros.gluc),
-    lip:  Math.max(0, cible_lip  - fixeMacros.lip),
-  };
-
-  // Groupes présents dans cette recette
-  const presentTypes = ALL_TYPES.filter(t => ings.some(i=>i.type===t));
-
-  // Pour chaque groupe présent, calculer sa contribution à chaque macro (pour ratio=1 = g_ref de chaque ing)
-  // contrib[groupe][macro] = somme(macro_i * g_ref_i / 100) pour les ings du groupe
-  const contrib = {};
-  presentTypes.forEach(t => {
-    contrib[t] = {};
-    MACRO_KEYS.forEach(m => {
-      contrib[t][m] = ings.filter(i=>i.type===t).reduce((s,ing)=>s+ing[m]*ing.g_ref/100, 0);
+  // ── Cœur du solveur, réutilisable sur 2 passes ──
+  function solveCore(extraFixedG) {
+    // Nombre d'unités pour les ingrédients "fixe" quantifiables (pain, wrap, pitta...)
+    const fixeUnits = ings.map((ing,idx) => {
+      if (ing.ratio_of) return 1; // non concerné par la logique d'unités
+      if (ing.type !== "fixe" || !ing.unit_scalable) return 1;
+      const maxU = ing.max_units || 2;
+      const glucPerUnit = ing.gluc * ing.g_ref / 100;
+      let units = glucPerUnit > 0 ? Math.round(cible_gluc / glucPerUnit) : 1;
+      units = Math.max(1, Math.min(maxU, units));
+      return units;
     });
-  });
 
-  // Résoudre selon le nombre de groupes présents
-  // On mappe les groupes présents aux macros cibles dans le même ordre
-  // (ex: si présents = [prot, gluc], on résout sur [prot, gluc] en priorité)
-  let ratios = {};
-  presentTypes.forEach(t => { ratios[t] = 1; }); // défaut
+    // Macros fixes (fixe classiques + ratio_of avec leur poids déjà connu le cas échéant)
+    const fixeMacros = ings.reduce((a,ing,idx)=>{
+      if (ing.ratio_of) {
+        const g = extraFixedG[idx] || 0;
+        return { prot:a.prot+ing.prot*g/100, gluc:a.gluc+ing.gluc*g/100, lip:a.lip+ing.lip*g/100 };
+      }
+      if (ing.type!=="fixe") return a;
+      const g = ing.g_ref * fixeUnits[idx];
+      return { prot:a.prot+ing.prot*g/100, gluc:a.gluc+ing.gluc*g/100, lip:a.lip+ing.lip*g/100 };
+    },{prot:0,gluc:0,lip:0});
 
-  if (presentTypes.length === 1) {
-    // 1 groupe : résoudre sur sa macro principale
-    const t = presentTypes[0];
-    const mainMacro = t; // groupe prot → résoudre sur prot, etc.
-    const denom = contrib[t][mainMacro];
-    if (denom > 0) ratios[t] = need[mainMacro] / denom;
+    const need = {
+      prot: Math.max(0, cible_prot - fixeMacros.prot),
+      gluc: Math.max(0, cible_gluc - fixeMacros.gluc),
+      lip:  Math.max(0, cible_lip  - fixeMacros.lip),
+    };
 
-  } else if (presentTypes.length === 2) {
-    // 2 groupes : système 2x2 sur les 2 macros principales
-    const [t0, t1] = presentTypes;
-    // Macros à utiliser = les macros principales des deux groupes présents
-    const macros = presentTypes; // ex: ["prot","gluc"]
-    const A = [
-      [contrib[t0][macros[0]], contrib[t1][macros[0]]],
-      [contrib[t0][macros[1]], contrib[t1][macros[1]]],
-    ];
-    const b = [need[macros[0]], need[macros[1]]];
-    const d = det2(A);
-    if (Math.abs(d) > 1e-10) {
-      ratios[t0] = det2([[b[0],A[0][1]],[b[1],A[1][1]]]) / d;
-      ratios[t1] = det2([[A[0][0],b[0]],[A[1][0],b[1]]]) / d;
-    } else {
-      // Singulier : résoudre indépendamment sur macro principale
-      presentTypes.forEach(t => {
-        const m = t;
-        if (contrib[t][m] > 0) ratios[t] = need[m] / contrib[t][m];
+    const presentTypes = ALL_TYPES.filter(t => ings.some(i=>i.type===t && !i.ratio_of));
+
+    const contrib = {};
+    presentTypes.forEach(t => {
+      contrib[t] = {};
+      MACRO_KEYS.forEach(m => {
+        contrib[t][m] = ings.filter(i=>i.type===t && !i.ratio_of).reduce((s,ing)=>s+ing[m]*ing.g_ref/100, 0);
       });
+    });
+
+    let ratios = {};
+    presentTypes.forEach(t => { ratios[t] = 1; });
+
+    if (presentTypes.length === 1) {
+      const t = presentTypes[0];
+      const mainMacro = t;
+      const denom = contrib[t][mainMacro];
+      if (denom > 0) ratios[t] = need[mainMacro] / denom;
+
+    } else if (presentTypes.length === 2) {
+      const [t0, t1] = presentTypes;
+      const macros = presentTypes;
+      const A = [
+        [contrib[t0][macros[0]], contrib[t1][macros[0]]],
+        [contrib[t0][macros[1]], contrib[t1][macros[1]]],
+      ];
+      const b = [need[macros[0]], need[macros[1]]];
+      const d = det2(A);
+      if (Math.abs(d) > 1e-10) {
+        ratios[t0] = det2([[b[0],A[0][1]],[b[1],A[1][1]]]) / d;
+        ratios[t1] = det2([[A[0][0],b[0]],[A[1][0],b[1]]]) / d;
+      } else {
+        presentTypes.forEach(t => {
+          const m = t;
+          if (contrib[t][m] > 0) ratios[t] = need[m] / contrib[t][m];
+        });
+      }
+
+    } else if (presentTypes.length >= 3) {
+      const [t0,t1,t2] = presentTypes;
+      const macros = ["prot","gluc","lip"];
+      const A = macros.map(m => [contrib[t0][m], contrib[t1][m], contrib[t2][m]]);
+      const b = macros.map(m => need[m]);
+      const d = det3(A);
+      if (Math.abs(d) > 1e-10) {
+        const solve = (col) => {
+          const M = A.map((row,i)=>row.map((v,j)=>j===col?b[i]:v));
+          return det3(M)/d;
+        };
+        ratios[t0] = solve(0); ratios[t1] = solve(1); ratios[t2] = solve(2);
+      } else {
+        presentTypes.forEach(t => {
+          const m = t;
+          if (contrib[t][m] > 0) ratios[t] = need[m] / contrib[t][m];
+        });
+      }
     }
 
-  } else if (presentTypes.length >= 3) {
-    // 3 groupes : système 3x3
-    const [t0,t1,t2] = presentTypes;
-    const macros = ["prot","gluc","lip"];
-    const A = macros.map(m => [contrib[t0][m], contrib[t1][m], contrib[t2][m]]);
-    const b = macros.map(m => need[m]);
-    const d = det3(A);
-    if (Math.abs(d) > 1e-10) {
-      const solve = (col) => {
-        const M = A.map((row,i)=>row.map((v,j)=>j===col?b[i]:v));
-        return det3(M)/d;
-      };
-      ratios[t0] = solve(0); ratios[t1] = solve(1); ratios[t2] = solve(2);
-    } else {
-      presentTypes.forEach(t => {
-        const m = t;
-        if (contrib[t][m] > 0) ratios[t] = need[m] / contrib[t][m];
-      });
-    }
+    presentTypes.forEach(t => { ratios[t] = Math.max(0, ratios[t]); });
+
+    return { fixeUnits, ratios };
   }
 
-  // S'assurer que tous les ratios sont positifs
-  presentTypes.forEach(t => { ratios[t] = Math.max(0, ratios[t]); });
+  // ── Passe 1 : ratio_of ignorés (contribution 0) ──
+  const pass1 = solveCore({});
 
-  // Appliquer les ratios avec min/max
-  const applyMax = (ing, g) => { let v = Math.max(0, g); if (ing.min_g) v = Math.max(v, ing.min_g); if (ing.max_g) v = Math.min(v, ing.max_g); return v; };
+  // Calcule le poids de l'ingrédient référencé (ex: Blanc de poulet) d'après la passe 1
+  const gramsOf = (nom, fixeUnits, ratios) => {
+    const idx = ings.findIndex(i => i.nom === nom);
+    if (idx < 0) return 0;
+    const ing = ings[idx];
+    if (ing.type === "fixe") return ing.g_ref * fixeUnits[idx];
+    const ratio = ratios[ing.type] || 1;
+    return applyMax(ing, ing.g_ref * ratio);
+  };
+
+  // ── Calcule le poids des ingrédients "ratio_of" à partir de la passe 1 ──
+  const extraFixedG = {};
+  ratioIdxs.forEach(idx => {
+    const ing = ings[idx];
+    const refGrams = gramsOf(ing.ratio_of, pass1.fixeUnits, pass1.ratios);
+    extraFixedG[idx] = (ing.ratio_pct || 0) * refGrams;
+  });
+
+  // ── Passe 2 : resolution finale avec les ratio_of figés ──
+  const pass2 = solveCore(extraFixedG);
+  const { fixeUnits, ratios } = pass2;
 
   return ings.map((ing, idx) => {
     if (ing.type==="libre") {
       return {...ing, g_calc:0, prot_calc:0, gluc_calc:0, lip_calc:0, kcal_calc:0};
+    }
+    if (ing.ratio_of) {
+      const g = extraFixedG[idx] || 0;
+      const p=Math.round(ing.prot*g/100), gc=Math.round(ing.gluc*g/100), l=Math.round(ing.lip*g/100);
+      return {...ing, g_calc:Math.round(g), prot_calc:p, gluc_calc:gc, lip_calc:l, kcal_calc:Math.round((p+gc)*4+l*9)};
     }
     if (ing.type==="fixe") {
       const units = fixeUnits[idx];
