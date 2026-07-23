@@ -1,11 +1,40 @@
 
 import { useState, useMemo } from "react";
 
-const RED = "#E00000";
-const DARK = "#0A0404";
-const GRAY = "#C4C4C4";
-const ORANGE = "#E07700";
-const GOLD = "#C9A84C";
+// ── VULKAN COACHING — DA officielle (issue du design system du site) ──
+const RED        = "#7E1D2B";  // bordeaux signature — accent principal
+const RED_BRIGHT = "#B5293C";  // ember — hover, accents chauds, protéines
+const RED_DEEP   = "#5E1622";  // structurel — barres, séparateurs
+const RED_VEIN   = "#240810";  // quasi-noir bordeaux — vignettes
+const GOLD       = "#C7A24A";  // reflet métallique — RARE, réservé aux temps forts
+const GOLD_LIGHT = "#E4C36A";
+const STEEL      = "#9A9CA1";  // glucides — accent neutre métallique
+const STEEL_LIGHT= "#C6C8CD";
+
+const DARK        = "#000000"; // noir pur — fond principal
+const INK         = "#0C0A0A";
+const STONE_DEEP  = "#120F0F";
+const STONE       = "#1A1616";
+const STONE_MID   = "#221C1C";
+const STONE_LIGHT = "#2D2424";
+
+const WHITE      = "#F4F1EC";  // blanc chaud
+const GRAY       = "#B4ABAB";  // neutral-300
+const GRAY_MUTED = "#756B6B";  // neutral-500
+const GRAY_DIM   = "#4A4242";  // neutral-700
+
+const F_DISPLAY   = "'Cinzel', Georgia, serif";
+const F_CONDENSED = "'Barlow Condensed', sans-serif";
+const F_BODY      = "'Barlow', -apple-system, BlinkMacSystemFont, sans-serif";
+
+const SHADOW_RED_GLOW = "0 0 36px rgba(94,22,34,0.55), 0 0 10px rgba(181,41,60,0.45)";
+const SHADOW_GOLD_SM  = "0 0 8px rgba(199,162,74,0.3)";
+const SHADOW_MD       = "0 4px 16px rgba(0,0,0,0.5)";
+const SHADOW_LG       = "0 8px 32px rgba(0,0,0,0.6)";
+
+// Alias de compatibilité (le reste du fichier utilise encore ORANGE pour les glucides)
+const ORANGE = STEEL_LIGHT;
+
 
 // ── RECETTES ──
 // Macros TOUJOURS pour 100g cru
@@ -702,19 +731,19 @@ const TAGS_LIST = [
 // ── UI ──
 function MacroTag({val,col,label}) {
   return (
-    <div style={{background:"#0d0101",borderRadius:6,padding:"7px 10px",textAlign:"center",minWidth:52}}>
-      <div style={{fontSize:9,color:GRAY,marginBottom:2}}>{label}</div>
-      <div style={{fontSize:15,fontWeight:800,color:col}}>{Math.round(val)}g</div>
+    <div style={{background:INK,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"8px 11px",textAlign:"center",minWidth:54}}>
+      <div style={{fontSize:9,color:GRAY_MUTED,marginBottom:2,fontFamily:F_CONDENSED,letterSpacing:"0.08em",textTransform:"uppercase"}}>{label}</div>
+      <div style={{fontSize:15,fontWeight:700,color:col,fontFamily:F_BODY}}>{Math.round(val)}g</div>
     </div>
   );
 }
 
 const SEL = {
-  width:"100%",background:"#160303",border:"1px solid #3a0808",borderRadius:8,
-  color:"white",fontSize:13,fontWeight:700,padding:"12px 14px",cursor:"pointer",
+  width:"100%",background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,
+  color:WHITE,fontSize:13,fontWeight:600,fontFamily:F_BODY,padding:"13px 16px",cursor:"pointer",
   appearance:"none",WebkitAppearance:"none",outline:"none",
 };
-const ARR = {position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:RED,fontSize:12,pointerEvents:"none"};
+const ARR = {position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",color:RED_BRIGHT,fontSize:11,pointerEvents:"none"};
 
 function baseRefPreview(r) {
   return r.ingredients.filter(i=>i.type!=="libre").reduce((a,i)=>({
@@ -723,18 +752,19 @@ function baseRefPreview(r) {
 }
 
 function RecipeResultCard({ r, onSelect }) {
+  const [hover, setHover] = useState(false);
   return (
-    <div onClick={onSelect} style={{
-      background:"#120202", border:"2px solid #2a0808", borderRadius:10,
-      padding:"12px 14px", cursor:"pointer", display:"flex", alignItems:"center", gap:12,
-      transition:"all 0.15s"
+    <div onClick={onSelect} onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} style={{
+      background:STONE_MID, border:`1px solid ${hover?"#8A6A1E":STONE_LIGHT}`, borderTop:`2px solid ${hover?GOLD:RED_DEEP}`, borderRadius:4,
+      padding:"14px 16px", cursor:"pointer", display:"flex", alignItems:"center", gap:14,
+      transition:"all 250ms ease", boxShadow: hover?"0 0 8px rgba(199,162,74,0.3)":"0 1px 4px rgba(0,0,0,0.4)"
     }}>
-      <div style={{fontSize:24}}>{r.emoji}</div>
+      <div style={{fontSize:26}}>{r.emoji}</div>
       <div style={{flex:1}}>
-        <div style={{fontWeight:800,fontSize:13,color:"white"}}>{r.nom}</div>
-        <div style={{fontSize:10,color:GRAY,marginTop:2}}>{r.description}</div>
+        <div style={{fontWeight:700,fontSize:13,color:WHITE,fontFamily:F_CONDENSED,letterSpacing:"0.03em",textTransform:"uppercase"}}>{r.nom}</div>
+        <div style={{fontSize:11,color:GRAY,marginTop:3,fontFamily:F_BODY}}>{r.description}</div>
       </div>
-      <div style={{color:RED,fontSize:18}}>→</div>
+      <div style={{color:hover?GOLD:RED_BRIGHT,fontSize:18,transition:"color 250ms ease"}}>→</div>
     </div>
   );
 }
@@ -772,65 +802,86 @@ export default function App() {
   }),{prot:0,gluc:0,lip:0,kcal:0}),[result]);
 
   const kcal_cible = prot*4+gluc*4+lip*9;
-  const tc = t=>t==="prot"?RED:t==="gluc"?ORANGE:t==="lip"?GOLD:GRAY;
+  const tc = t=>t==="prot"?RED_BRIGHT:t==="gluc"?STEEL_LIGHT:t==="lip"?GOLD:GRAY;
 
   const resetSearch = () => {
     setSearchMode(null); setSelectedIngr([]); setSelectedTags([]);
     setMealType(""); setRecetteId("");
   };
 
-  const modeBtn = (id, emoji, label) => (
-    <button onClick={()=>{ setSearchMode(id); setRecetteId(""); }} style={{
-      flex:1, minWidth:140, padding:"16px 12px", border:`2px solid ${searchMode===id?RED:"#2a0808"}`,
-      background:searchMode===id?"#1e0404":"#120202", color:"white", borderRadius:10,
-      cursor:"pointer", textAlign:"center"
-    }}>
-      <div style={{fontSize:22, marginBottom:6}}>{emoji}</div>
-      <div style={{fontSize:12, fontWeight:700}}>{label}</div>
-    </button>
-  );
+  const ModeButton = ({ id, emoji, label }) => {
+    const [hover, setHover] = useState(false);
+    const active = searchMode===id;
+    return (
+      <button onClick={()=>{ setSearchMode(id); setRecetteId(""); }}
+        onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}
+        style={{
+          flex:1, minWidth:140, padding:"20px 14px",
+          border:`1px solid ${active?RED_BRIGHT:(hover?"#8A6A1E":STONE_LIGHT)}`,
+          borderTop:`2px solid ${active?RED_BRIGHT:(hover?GOLD:RED_DEEP)}`,
+          background:active?STONE:STONE_MID, color:WHITE, borderRadius:4,
+          cursor:"pointer", textAlign:"center", transition:"all 250ms ease",
+          boxShadow: active?SHADOW_RED_GLOW:(hover?SHADOW_GOLD_SM:"none"),
+        }}>
+        <div style={{fontSize:24, marginBottom:8}}>{emoji}</div>
+        <div style={{fontSize:12, fontWeight:700, fontFamily:F_CONDENSED, letterSpacing:"0.05em", textTransform:"uppercase", whiteSpace:"pre-line"}}>{label}</div>
+      </button>
+    );
+  };
 
   return (
-    <div style={{background:DARK,minHeight:"100vh",color:"white",fontFamily:"'Helvetica Neue',sans-serif"}}>
-      <div style={{background:"#0d0101",borderBottom:`3px solid ${RED}`,padding:"16px 22px"}}>
-        <div style={{fontSize:10,color:RED,fontWeight:700,letterSpacing:2,marginBottom:3}}>VULKAN COACHING</div>
-        <div style={{fontSize:19,fontWeight:800}}>TROUVE TA RECETTE</div>
-        <div style={{fontSize:11,color:GRAY,marginTop:3}}>Par ingrédients, par envie, ou directement — puis calcule tes portions</div>
+    <div style={{background:DARK,minHeight:"100vh",color:WHITE,fontFamily:F_BODY}}>
+
+      {/* ── HEADER ── */}
+      <div style={{
+        background:`linear-gradient(180deg, ${INK} 0%, ${DARK} 100%)`,
+        borderBottom:`1px solid ${RED_DEEP}`,
+        boxShadow:"0 2px 24px rgba(0,0,0,0.6)",
+        padding:"28px 24px 22px",
+        position:"relative", overflow:"hidden",
+      }}>
+        <div style={{
+          position:"absolute", top:"-60%", left:"50%", transform:"translateX(-50%)",
+          width:500, height:300,
+          background:"radial-gradient(ellipse at center, rgba(94,22,34,0.35) 0%, rgba(0,0,0,0) 70%)",
+          pointerEvents:"none"
+        }} />
+        <div style={{fontFamily:F_CONDENSED,fontSize:10,color:RED_BRIGHT,fontWeight:700,letterSpacing:"0.25em",marginBottom:8,position:"relative"}}>VULKAN COACHING</div>
+        <div style={{
+          fontFamily:F_DISPLAY, fontSize:"clamp(22px,5vw,32px)", fontWeight:700, color:WHITE,
+          letterSpacing:"0.04em", textShadow:"0 1px 2px rgba(0,0,0,0.9), 0 0 16px rgba(126,29,43,0.4)",
+          position:"relative"
+        }}>Trouve ta recette</div>
+        <div style={{fontFamily:F_BODY,fontSize:12,color:GRAY,marginTop:8,position:"relative",maxWidth:420}}>Par ingrédients, par envie, ou directement — puis calcule tes portions exactes.</div>
       </div>
 
-      <div style={{padding:"22px 22px 48px"}}>
+      <div style={{padding:"26px 24px 56px",maxWidth:640,margin:"0 auto"}}>
 
         {/* ── 1# MODE DE RECHERCHE ── */}
-        <div style={{fontSize:12,color:RED,fontWeight:700,marginBottom:14,letterSpacing:1}}>1# COMMENT TU CHOISIS TA RECETTE ?</div>
-        <div style={{display:"flex",gap:10,marginBottom:24,flexWrap:"wrap"}}>
-          {modeBtn("ingredients","🧊","Par ingrédients\n(mon frigo)")}
-          {modeBtn("envie","✨","Par envie")}
-          {modeBtn("libre","🎲","Peu importe")}
+        <SectionLabel num="1" text="Comment tu choisis ta recette ?" />
+        <div style={{display:"flex",gap:10,marginBottom:28,flexWrap:"wrap"}}>
+          <ModeButton id="ingredients" emoji="🧊" label={"Par ingrédients\n(mon frigo)"} />
+          <ModeButton id="envie" emoji="✨" label="Par envie" />
+          <ModeButton id="libre" emoji="🎲" label="Peu importe" />
         </div>
 
         {/* ── MODE INGRÉDIENTS ── */}
         {searchMode==="ingredients" && !recette && (
-          <div style={{marginBottom:28}}>
-            <div style={{fontSize:11,color:GRAY,marginBottom:12}}>Sélectionne ce que tu as sous la main :</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:20}}>
+          <div style={{marginBottom:30}}>
+            <div style={{fontSize:12,color:GRAY,marginBottom:14,fontFamily:F_BODY}}>Sélectionne ce que tu as sous la main :</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:22}}>
               {INGREDIENTS_LIST.map(ing=>(
-                <button key={ing.id} onClick={()=>toggleIngr(ing.id)} style={{
-                  padding:"8px 14px", borderRadius:20, border:`1.5px solid ${selectedIngr.includes(ing.id)?RED:"#3a0808"}`,
-                  background:selectedIngr.includes(ing.id)?RED:"#160303", color:"white",
-                  cursor:"pointer", fontSize:12, fontWeight:600
-                }}>{ing.emoji} {ing.label}</button>
+                <ToggleChip key={ing.id} active={selectedIngr.includes(ing.id)} onClick={()=>toggleIngr(ing.id)} emoji={ing.emoji} label={ing.label} />
               ))}
             </div>
             {selectedIngr.length>0 && (
               <div>
-                <div style={{fontSize:11,color:RED,fontWeight:700,marginBottom:10,letterSpacing:1}}>
-                  {filteredByIngr.length} RECETTE{filteredByIngr.length>1?"S":""} TROUVÉE{filteredByIngr.length>1?"S":""}
+                <div style={{fontFamily:F_CONDENSED,fontSize:11,color:RED_BRIGHT,fontWeight:700,marginBottom:12,letterSpacing:"0.08em",textTransform:"uppercase"}}>
+                  {filteredByIngr.length} recette{filteredByIngr.length>1?"s":""} trouvée{filteredByIngr.length>1?"s":""}
                 </div>
-                <div style={{display:"grid",gap:8}}>
-                  {filteredByIngr.length===0 && <div style={{fontSize:12,color:"#555"}}>Aucune recette avec ces ingrédients. Essaie une autre combinaison.</div>}
-                  {filteredByIngr.map(r=>(
-                    <RecipeResultCard key={r.id} r={r} onSelect={()=>setRecetteId(String(r.id))} />
-                  ))}
+                <div style={{display:"grid",gap:9}}>
+                  {filteredByIngr.length===0 && <EmptyNote text="Aucune recette avec ces ingrédients. Essaie une autre combinaison." />}
+                  {filteredByIngr.map(r=><RecipeResultCard key={r.id} r={r} onSelect={()=>setRecetteId(String(r.id))} />)}
                 </div>
               </div>
             )}
@@ -839,50 +890,44 @@ export default function App() {
 
         {/* ── MODE ENVIE ── */}
         {searchMode==="envie" && !recette && (
-          <div style={{marginBottom:28}}>
-            <div style={{fontSize:11,color:GRAY,marginBottom:12}}>T'as envie de quoi ?</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:20}}>
+          <div style={{marginBottom:30}}>
+            <div style={{fontSize:12,color:GRAY,marginBottom:14,fontFamily:F_BODY}}>T'as envie de quoi ?</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:22}}>
               {TAGS_LIST.map(t=>(
-                <button key={t.id} onClick={()=>toggleTag(t.id)} style={{
-                  padding:"8px 14px", borderRadius:20, border:`1.5px solid ${selectedTags.includes(t.id)?RED:"#3a0808"}`,
-                  background:selectedTags.includes(t.id)?RED:"#160303", color:"white",
-                  cursor:"pointer", fontSize:12, fontWeight:600
-                }}>{t.emoji} {t.label}</button>
+                <ToggleChip key={t.id} active={selectedTags.includes(t.id)} onClick={()=>toggleTag(t.id)} emoji={t.emoji} label={t.label} />
               ))}
             </div>
             {selectedTags.length>0 && (
               <div>
-                <div style={{fontSize:11,color:RED,fontWeight:700,marginBottom:10,letterSpacing:1}}>
-                  {filteredByTags.length} RECETTE{filteredByTags.length>1?"S":""} TROUVÉE{filteredByTags.length>1?"S":""}
+                <div style={{fontFamily:F_CONDENSED,fontSize:11,color:RED_BRIGHT,fontWeight:700,marginBottom:12,letterSpacing:"0.08em",textTransform:"uppercase"}}>
+                  {filteredByTags.length} recette{filteredByTags.length>1?"s":""} trouvée{filteredByTags.length>1?"s":""}
                 </div>
-                <div style={{display:"grid",gap:8}}>
-                  {filteredByTags.length===0 && <div style={{fontSize:12,color:"#555"}}>Aucune recette ne correspond à cette combinaison. Retire un critère.</div>}
-                  {filteredByTags.map(r=>(
-                    <RecipeResultCard key={r.id} r={r} onSelect={()=>setRecetteId(String(r.id))} />
-                  ))}
+                <div style={{display:"grid",gap:9}}>
+                  {filteredByTags.length===0 && <EmptyNote text="Aucune recette ne correspond à cette combinaison. Retire un critère." />}
+                  {filteredByTags.map(r=><RecipeResultCard key={r.id} r={r} onSelect={()=>setRecetteId(String(r.id))} />)}
                 </div>
               </div>
             )}
           </div>
         )}
 
-        {/* ── MODE LIBRE (flow original) ── */}
+        {/* ── MODE LIBRE ── */}
         {searchMode==="libre" && !recette && (
-          <div style={{marginBottom:28}}>
-            <div style={{fontSize:11,color:GRAY,marginBottom:10}}>Type de repas</div>
-            <div style={{position:"relative",marginBottom:20,maxWidth:480}}>
+          <div style={{marginBottom:30}}>
+            <div style={{fontSize:12,color:GRAY,marginBottom:12,fontFamily:F_BODY}}>Type de repas</div>
+            <div style={{position:"relative",marginBottom:20}}>
               <select value={mealType} onChange={e=>{setMealType(e.target.value);setRecetteId("");}} style={SEL}>
-                <option value="" disabled style={{color:"#555"}}>— Sélectionne un type —</option>
-                {MEAL_TYPES.map(m=><option key={m.id} value={m.id} style={{background:"#160303"}}>{m.label}</option>)}
+                <option value="" disabled style={{color:GRAY_MUTED}}>— Sélectionne un type —</option>
+                {MEAL_TYPES.map(m=><option key={m.id} value={m.id} style={{background:STONE_MID}}>{m.label}</option>)}
               </select>
               <div style={ARR}>▼</div>
             </div>
             {mealType && (
-              <div style={{position:"relative",maxWidth:480}}>
+              <div style={{position:"relative"}}>
                 <select value={recetteId} onChange={e=>setRecetteId(e.target.value)} style={SEL}>
-                  <option value="" disabled style={{color:"#555"}}>— Sélectionne une recette —</option>
+                  <option value="" disabled style={{color:GRAY_MUTED}}>— Sélectionne une recette —</option>
                   {filteredMealType.map(r=>(
-                    <option key={r.id} value={r.id} style={{background:"#160303"}}>{r.emoji}  {r.nom}</option>
+                    <option key={r.id} value={r.id} style={{background:STONE_MID}}>{r.emoji}  {r.nom}</option>
                   ))}
                 </select>
                 <div style={ARR}>▼</div>
@@ -891,44 +936,47 @@ export default function App() {
           </div>
         )}
 
-        {/* Recette sélectionnée : bouton pour changer */}
+        {/* Recette sélectionnée */}
         {recette && (
-          <div style={{background:"#160303",border:"1px solid #3a0808",borderRadius:10,
-            padding:"14px 16px",marginBottom:24,maxWidth:480}}>
+          <div style={{
+            background:STONE_MID, border:`1px solid ${STONE_LIGHT}`, borderTop:`2px solid ${GOLD}`, borderRadius:4,
+            padding:"16px 18px",marginBottom:26, boxShadow:SHADOW_MD,
+          }}>
             <div style={{display:"flex",gap:12,alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                <div style={{fontSize:28}}>{recette.emoji}</div>
+              <div style={{display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{fontSize:30}}>{recette.emoji}</div>
                 <div>
-                  <div style={{fontWeight:800,fontSize:13}}>{recette.nom}</div>
-                  <div style={{fontSize:10,color:GRAY,marginTop:2}}>{recette.description}</div>
+                  <div style={{fontWeight:700,fontSize:14,fontFamily:F_CONDENSED,letterSpacing:"0.03em",textTransform:"uppercase",color:WHITE}}>{recette.nom}</div>
+                  <div style={{fontSize:11,color:GRAY,marginTop:3}}>{recette.description}</div>
                 </div>
               </div>
               <button onClick={resetSearch} style={{
-                background:"transparent", border:`1px solid ${RED}`, color:RED, borderRadius:6,
-                padding:"6px 10px", fontSize:10, fontWeight:700, cursor:"pointer", whiteSpace:"nowrap"
+                background:"transparent", border:`1px solid ${RED}`, color:RED_BRIGHT, borderRadius:4,
+                padding:"7px 12px", fontSize:10, fontWeight:700, fontFamily:F_CONDENSED, letterSpacing:"0.05em",
+                cursor:"pointer", whiteSpace:"nowrap", textTransform:"uppercase"
               }}>← Changer</button>
             </div>
           </div>
         )}
 
-        {/* ── 2# MACROS (une fois la recette choisie) ── */}
+        {/* ── 2# MACROS ── */}
         {recette && (
           <>
-            <div style={{fontSize:12,color:RED,fontWeight:700,marginBottom:16,letterSpacing:1}}>2# TES MACROS POUR CE REPAS</div>
-            <div style={{display:"grid",gap:14,marginBottom:20,maxWidth:480}}>
+            <SectionLabel num="2" text="Tes macros pour ce repas" />
+            <div style={{display:"grid",gap:16,marginBottom:22}}>
               {[
-                {label:"Protéines",val:prot,set:setProt,min:20,max:120,col:RED},
-                {label:"Glucides", val:gluc,set:setGluc,min:0, max:200,col:ORANGE},
+                {label:"Protéines",val:prot,set:setProt,min:20,max:120,col:RED_BRIGHT},
+                {label:"Glucides", val:gluc,set:setGluc,min:0, max:200,col:STEEL_LIGHT},
                 {label:"Lipides",  val:lip, set:setLip, min:0, max:60, col:GOLD},
               ].map(({label,val,set,min,max,col})=>(
                 <div key={label}>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-                    <label style={{fontSize:10,color:GRAY,fontWeight:700,letterSpacing:1}}>{label.toUpperCase()}</label>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:7}}>
+                    <label style={{fontSize:10,color:GRAY_MUTED,fontWeight:700,letterSpacing:"0.1em",fontFamily:F_CONDENSED,textTransform:"uppercase"}}>{label}</label>
                     <div style={{display:"flex",alignItems:"center",gap:6}}>
                       <input type="number" value={val} min={min} max={max}
                         onChange={e=>set(Math.max(min,Math.min(max,Number(e.target.value))))}
-                        style={{width:52,background:"#1a0303",border:`1px solid ${col}`,borderRadius:5,
-                          color:"white",fontWeight:800,fontSize:14,padding:"3px 6px",textAlign:"center"}}/>
+                        style={{width:54,background:INK,border:`1px solid ${col}`,borderRadius:4,
+                          color:WHITE,fontWeight:700,fontSize:14,padding:"4px 6px",textAlign:"center",fontFamily:F_BODY}}/>
                       <span style={{fontSize:11,color:GRAY}}>g</span>
                     </div>
                   </div>
@@ -937,14 +985,14 @@ export default function App() {
                 </div>
               ))}
             </div>
-            <div style={{background:"#160303",border:"1px solid #2a0808",borderRadius:8,padding:"10px 16px",
-              marginBottom:28,display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
-              <MacroTag val={prot} col={RED} label="Prot."/>
-              <MacroTag val={gluc} col={ORANGE} label="Gluc."/>
+            <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"12px 16px",
+              marginBottom:30,display:"flex",gap:9,flexWrap:"wrap",alignItems:"center"}}>
+              <MacroTag val={prot} col={RED_BRIGHT} label="Prot."/>
+              <MacroTag val={gluc} col={STEEL_LIGHT} label="Gluc."/>
               <MacroTag val={lip} col={GOLD} label="Lip."/>
-              <div style={{background:"#0d0101",borderRadius:6,padding:"7px 10px",textAlign:"center"}}>
-                <div style={{fontSize:9,color:GRAY,marginBottom:2}}>Total</div>
-                <div style={{fontSize:15,fontWeight:800,color:"#666"}}>{kcal_cible} kcal</div>
+              <div style={{background:INK,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"8px 11px",textAlign:"center"}}>
+                <div style={{fontSize:9,color:GRAY_MUTED,marginBottom:2,fontFamily:F_CONDENSED,letterSpacing:"0.08em",textTransform:"uppercase"}}>Total</div>
+                <div style={{fontSize:15,fontWeight:700,color:GRAY}}>{kcal_cible} kcal</div>
               </div>
             </div>
           </>
@@ -953,98 +1001,98 @@ export default function App() {
         {/* ── 3# RÉSULTAT ── */}
         {recette&&result&&totaux&&(
           <div>
-            <div style={{fontSize:12,color:RED,fontWeight:700,marginBottom:14,letterSpacing:1}}>
-              3# TES PORTIONS — {recette.emoji} {recette.nom.toUpperCase()}
+            <SectionLabel num="3" text={`Tes portions — ${recette.nom}`} />
+
+            <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderLeft:`2px solid ${GOLD}`,borderRadius:4,
+              padding:"11px 15px",marginBottom:16}}>
+              <div style={{fontSize:11,color:GOLD_LIGHT,fontStyle:"italic",fontFamily:F_BODY}}>💡 {recette.note}</div>
             </div>
 
-            <div style={{background:"#160303",border:"1px solid #3a0808",borderRadius:8,padding:"10px 14px",marginBottom:14}}>
-              <div style={{fontSize:10,color:GOLD,fontStyle:"italic"}}>💡 {recette.note}</div>
-            </div>
-
-            <div style={{background:"#120202",border:"1px solid #2a0808",borderRadius:10,overflow:"hidden",marginBottom:16}}>
+            <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,overflow:"hidden",marginBottom:18,boxShadow:SHADOW_MD}}>
               <div style={{display:"grid",gridTemplateColumns:"1fr 90px 44px 44px 44px 54px",
-                gap:4,padding:"8px 14px",background:RED}}>
+                gap:4,padding:"9px 15px",background:RED_DEEP}}>
                 {["INGRÉDIENT","PORTION","P","G","L","KCAL"].map(h=>(
-                  <div key={h} style={{fontSize:9,fontWeight:800,color:"white",textAlign:h==="INGRÉDIENT"?"left":"center"}}>{h}</div>
+                  <div key={h} style={{fontSize:9,fontWeight:700,color:WHITE,fontFamily:F_CONDENSED,letterSpacing:"0.06em",
+                    textAlign:h==="INGRÉDIENT"?"left":"center"}}>{h}</div>
                 ))}
               </div>
               {result.map((ing,i)=>(
                 <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 90px 44px 44px 44px 54px",
-                  gap:4,padding:"9px 14px",alignItems:"center",
-                  borderBottom:i<result.length-1?"1px solid #1a0303":"none",
-                  background:i%2===0?"#120202":"#0e0101"}}>
+                  gap:4,padding:"10px 15px",alignItems:"center",
+                  borderBottom:i<result.length-1?`1px solid ${STONE}`:"none",
+                  background:i%2===0?STONE_MID:STONE_DEEP}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:700,color:ing.type==="libre"?"#333":ing.type==="fixe"?GRAY:"white"}}>{ing.nom}</div>
+                    <div style={{fontSize:11,fontWeight:600,color:ing.type==="libre"?GRAY_DIM:ing.type==="fixe"?GRAY:WHITE,fontFamily:F_BODY}}>{ing.nom}</div>
                     {ing.hit_max&&<div style={{fontSize:8,color:GOLD,marginTop:1}}>⚠ plafond {ing.max_g}g</div>}
-                    {ing.type==="fixe"&&<div style={{fontSize:8,color:"#444",marginTop:1}}>fixe</div>}
+                    {ing.type==="fixe"&&<div style={{fontSize:8,color:GRAY_DIM,marginTop:1}}>fixe</div>}
                   </div>
                   <div style={{textAlign:"center"}}>
                     {ing.type==="libre"
-                      ?<span style={{fontSize:10,color:"#444"}}>À volonté</span>
+                      ?<span style={{fontSize:10,color:GRAY_DIM}}>À volonté</span>
                       :ing.fixe_label
                       ?<span style={{fontSize:10,color:GOLD,fontWeight:700}}>{ing.fixe_label}</span>
                       :ing.egg
-                      ?<><span style={{fontSize:13,fontWeight:800,color:tc(ing.type)}}>{Math.max(1,Math.round(ing.g_calc/50))}</span><span style={{fontSize:11,color:GRAY}}> œuf{Math.round(ing.g_calc/50)>1?"s":""}</span></>
-                      :<div><span style={{fontSize:13,fontWeight:800,color:tc(ing.type)}}>{ing.g_calc}g</span><div style={{fontSize:8,color:"#444"}}>cru</div></div>
+                      ?<><span style={{fontSize:13,fontWeight:700,color:tc(ing.type)}}>{Math.max(1,Math.round(ing.g_calc/50))}</span><span style={{fontSize:11,color:GRAY}}> œuf{Math.round(ing.g_calc/50)>1?"s":""}</span></>
+                      :<div><span style={{fontSize:13,fontWeight:700,color:tc(ing.type)}}>{ing.g_calc}g</span><div style={{fontSize:8,color:GRAY_DIM}}>cru</div></div>
                     }
                   </div>
                   {[ing.prot_calc,ing.gluc_calc,ing.lip_calc,ing.kcal_calc].map((v,vi)=>(
                     <div key={vi} style={{textAlign:"center",fontSize:11,
-                      color:ing.type==="libre"?"#222":v>0?GRAY:"#333",fontWeight:v>0?600:400}}>{v>0?v:"—"}</div>
+                      color:ing.type==="libre"?GRAY_DIM:v>0?GRAY:GRAY_DIM,fontWeight:v>0?600:400}}>{v>0?v:"—"}</div>
                   ))}
                 </div>
               ))}
               <div style={{display:"grid",gridTemplateColumns:"1fr 90px 44px 44px 44px 54px",
-                gap:4,padding:"10px 14px",background:"#1e0303",borderTop:`2px solid ${RED}`}}>
-                <div style={{fontSize:11,fontWeight:800,color:"white",gridColumn:"1/3"}}>TOTAL</div>
+                gap:4,padding:"11px 15px",background:INK,borderTop:`2px solid ${RED_BRIGHT}`}}>
+                <div style={{fontSize:11,fontWeight:700,color:WHITE,gridColumn:"1/3",fontFamily:F_CONDENSED,letterSpacing:"0.05em",textTransform:"uppercase"}}>Total</div>
                 {[totaux.prot,totaux.gluc,totaux.lip,totaux.kcal].map((v,vi)=>(
-                  <div key={vi} style={{textAlign:"center",fontSize:14,fontWeight:800,color:[RED,ORANGE,GOLD,"#888"][vi]}}>{Math.round(v)}</div>
+                  <div key={vi} style={{textAlign:"center",fontSize:14,fontWeight:700,color:[RED_BRIGHT,STEEL_LIGHT,GOLD,GRAY][vi]}}>{Math.round(v)}</div>
                 ))}
               </div>
             </div>
 
-            <div style={{background:"#160303",border:"1px solid #2a0808",borderRadius:8,padding:"12px 16px",marginBottom:16}}>
-              <div style={{fontSize:10,color:GRAY,fontWeight:700,marginBottom:10,letterSpacing:1}}>CIBLE VS OBTENU</div>
+            <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"14px 17px",marginBottom:18}}>
+              <div style={{fontFamily:F_CONDENSED,fontSize:10,color:GRAY_MUTED,fontWeight:700,marginBottom:11,letterSpacing:"0.1em",textTransform:"uppercase"}}>Cible vs obtenu</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
                 {[
-                  {label:"Prot.", cible:prot, obtenu:Math.round(totaux.prot), col:RED,    tol:3},
-                  {label:"Gluc.", cible:gluc, obtenu:Math.round(totaux.gluc), col:ORANGE, tol:5},
-                  {label:"Lip.",  cible:lip,  obtenu:Math.round(totaux.lip),  col:GOLD,   tol:3},
-                  {label:"Kcal",  cible:kcal_cible, obtenu:Math.round(totaux.kcal), col:"#666", tol:30},
+                  {label:"Prot.", cible:prot, obtenu:Math.round(totaux.prot), col:RED_BRIGHT, tol:3},
+                  {label:"Gluc.", cible:gluc, obtenu:Math.round(totaux.gluc), col:STEEL_LIGHT, tol:5},
+                  {label:"Lip.",  cible:lip,  obtenu:Math.round(totaux.lip),  col:GOLD,  tol:3},
+                  {label:"Kcal",  cible:kcal_cible, obtenu:Math.round(totaux.kcal), col:GRAY, tol:30},
                 ].map(({label,cible,obtenu,col,tol})=>{
                   const diff=obtenu-cible; const ok=Math.abs(diff)<=tol;
                   return(
-                    <div key={label} style={{background:"#0d0101",borderRadius:6,padding:"8px",textAlign:"center"}}>
-                      <div style={{fontSize:9,color:GRAY,marginBottom:3}}>{label}</div>
-                      <div style={{fontSize:15,fontWeight:800,color:col}}>{obtenu}</div>
-                      <div style={{fontSize:9,marginTop:2,color:ok?"#4CAF50":Math.abs(diff)<=tol*2?"#ff9800":RED}}>
-                        {ok?"✓":(diff>0?`+${diff}`:diff)}
+                    <div key={label} style={{background:INK,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"9px",textAlign:"center"}}>
+                      <div style={{fontSize:9,color:GRAY_MUTED,marginBottom:3,fontFamily:F_CONDENSED,letterSpacing:"0.06em",textTransform:"uppercase"}}>{label}</div>
+                      <div style={{fontSize:15,fontWeight:700,color:col}}>{obtenu}</div>
+                      <div style={{fontSize:9,marginTop:2,color:ok?"#7FA876":Math.abs(diff)<=tol*2?GOLD_LIGHT:RED_BRIGHT,fontWeight:ok?700:400}}>
+                        {ok?"✓ atteint":(diff>0?`+${diff}`:diff)}
                       </div>
-                      <div style={{fontSize:8,color:"#444"}}>cible : {cible}</div>
+                      <div style={{fontSize:8,color:GRAY_DIM,marginTop:2}}>cible : {cible}</div>
                     </div>
                   );
                 })}
               </div>
               {result.some(i=>i.max_g&&i.g_calc>=i.max_g)&&(
-                <div style={{marginTop:10,fontSize:10,color:GOLD,fontStyle:"italic"}}>
+                <div style={{marginTop:11,fontSize:10,color:GOLD_LIGHT,fontStyle:"italic"}}>
                   ⚠ Un ingrédient a atteint son plafond — les lipides peuvent être légèrement sous la cible. Compense sur un autre repas.
                 </div>
               )}
             </div>
 
-            <div style={{background:"#120202",border:"1px solid #2a0808",borderRadius:10,overflow:"hidden"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",
-                padding:"12px 16px",background:"#1a0303"}}>
-                <div style={{fontSize:11,color:RED,fontWeight:700,letterSpacing:1}}>📋 CONSIGNES DE PRÉPARATION</div>
+            <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,overflow:"hidden",boxShadow:SHADOW_MD}}>
+              <div style={{padding:"12px 17px",background:INK,borderBottom:`1px solid ${STONE_LIGHT}`}}>
+                <div style={{fontFamily:F_CONDENSED,fontSize:11,color:RED_BRIGHT,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase"}}>📋 Consignes de préparation</div>
               </div>
-              <div style={{padding:"14px 16px"}}>
+              <div style={{padding:"16px 17px"}}>
                 {recette.steps.map((step,i)=>(
-                  <div key={i} style={{display:"flex",gap:12,marginBottom:12,alignItems:"flex-start"}}>
-                    <div style={{background:RED,color:"white",borderRadius:"50%",minWidth:22,height:22,
-                      display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,marginTop:1}}>
+                  <div key={i} style={{display:"flex",gap:13,marginBottom:13,alignItems:"flex-start"}}>
+                    <div style={{background:RED,color:WHITE,borderRadius:"50%",minWidth:22,height:22,
+                      display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,marginTop:1,
+                      border:`1px solid ${RED_BRIGHT}`}}>
                       {i+1}
                     </div>
-                    <div style={{fontSize:12,color:GRAY,lineHeight:1.5}}>{step}</div>
+                    <div style={{fontSize:12,color:GRAY,lineHeight:1.6,fontFamily:F_BODY}}>{step}</div>
                   </div>
                 ))}
               </div>
@@ -1054,10 +1102,42 @@ export default function App() {
 
       </div>
 
-      <div style={{borderTop:`3px solid ${RED}`,padding:"12px 22px",background:"#0a0101",display:"flex",justifyContent:"space-between"}}>
-        <div style={{fontSize:10,color:"#333"}}>VULKAN COACHING · vulkancoaching.fr</div>
-        <div style={{fontSize:10,color:"#333"}}>@vulkan_coaching</div>
+      <div style={{borderTop:`1px solid ${RED_DEEP}`,padding:"14px 24px",background:INK,display:"flex",justifyContent:"space-between"}}>
+        <div style={{fontSize:10,color:GRAY_DIM,fontFamily:F_CONDENSED,letterSpacing:"0.05em"}}>VULKAN COACHING · vulkancoaching.fr</div>
+        <div style={{fontSize:10,color:GRAY_DIM,fontFamily:F_CONDENSED,letterSpacing:"0.05em"}}>@vulkan_coaching</div>
       </div>
     </div>
   );
+}
+
+// ── Composants de mise en page ──
+function SectionLabel({ num, text }) {
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
+      <div style={{
+        width:22,height:22,borderRadius:"50%",background:RED,border:`1px solid ${RED_BRIGHT}`,
+        display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
+        fontFamily:F_CONDENSED,fontSize:11,fontWeight:700,color:WHITE,
+      }}>{num}</div>
+      <div style={{fontFamily:F_CONDENSED,fontSize:13,color:WHITE,fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>{text}</div>
+    </div>
+  );
+}
+
+function ToggleChip({ active, onClick, emoji, label }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <button onClick={onClick} onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} style={{
+      padding:"9px 15px", borderRadius:999,
+      border:`1px solid ${active?RED_BRIGHT:(hover?"#8A6A1E":STONE_LIGHT)}`,
+      background:active?RED:STONE_MID, color:WHITE,
+      cursor:"pointer", fontSize:12, fontWeight:600, fontFamily:F_BODY,
+      transition:"all 200ms ease",
+      boxShadow: active?"0 0 12px rgba(126,29,43,0.4)":"none",
+    }}>{emoji} {label}</button>
+  );
+}
+
+function EmptyNote({ text }) {
+  return <div style={{fontSize:12,color:GRAY_DIM,fontStyle:"italic",padding:"8px 2px"}}>{text}</div>;
 }
