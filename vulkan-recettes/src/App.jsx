@@ -1,5 +1,5 @@
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 // ── VULKAN COACHING — DA officielle (issue du design system du site) ──
 const RED        = "#7E1D2B";  // bordeaux signature — accent principal
@@ -48,6 +48,7 @@ const RECETTES = [
     description:"Moelleux, rapides, topping whey pour la touche sucrée.",
     note:"Ne pas trop mélanger la pâte — quelques grumeaux c'est normal pour des pancakes aérés.",
     ingr:["avoine","oeuf"], tags:["sucre","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine",          type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Lait d'amandes sans sucre", type:"lip",  prot:0,  gluc:0,  lip:1,  g_ref:150, max_g:250, min_g:50 },
@@ -64,6 +65,7 @@ const RECETTES = [
     description:"Prépare la veille, prêt le matin. Aucune excuse.",
     note:"Plus les flocons trempent longtemps, plus c'est onctueux. 8h minimum.",
     ingr:["avoine"], tags:["sucre","rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Skyr nature",      type:"prot", prot:10, gluc:4,  lip:0,  g_ref:150 },
@@ -79,6 +81,7 @@ const RECETTES = [
     description:"Version plus gourmande avec la banane pour sucrer naturellement.",
     note:"La banane bien mûre donne plus de goût sucré sans rien ajouter.",
     ingr:["avoine"], tags:["sucre","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Skyr nature",      type:"prot", prot:10, gluc:4,  lip:0,  g_ref:150 },
@@ -94,6 +97,7 @@ const RECETTES = [
     description:"Version chaude réconfortante. La whey choco en touche finale.",
     note:"Ajoute la whey hors du feu pour éviter les grumeaux.",
     ingr:["avoine"], tags:["sucre","reconfort"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Lait écrémé",      type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:200, max_g:350 },
@@ -108,6 +112,7 @@ const RECETTES = [
     description:"Version chaude classique, rassasiante et simple.",
     note:"La pomme peut être cuite avec les flocons pour plus de fondant.",
     ingr:["avoine"], tags:["sucre","reconfort"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Lait écrémé",      type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:200, max_g:350 },
@@ -123,6 +128,7 @@ const RECETTES = [
     description:"Comfort food version coaching. Sucré, crémeux, sans culpabiliser.",
     note:"Ajoute la whey uniquement après refroidissement partiel — sinon grumeaux garantis.",
     ingr:["riz"], tags:["sucre","reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Riz rond / dessert", type:"gluc", prot:7,  gluc:78, lip:0,  g_ref:60  },
       { nom:"Lait écrémé",        type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:300, max_g:400 },
@@ -137,6 +143,7 @@ const RECETTES = [
     description:"La version coaching du pain perdu. Topping whey pour la gourmandise.",
     note:"Feu moyen-doux pour bien cuire l'intérieur sans brûler l'extérieur.",
     ingr:["pain","oeuf"], tags:["sucre","reconfort"],
+    temps:"t15",
     ingredients:[
       { nom:"Brioche Harrys allégée (tranche)", type:"fixe", prot:8.5, gluc:46, lip:10, g_ref:27,  unit_scalable:true, max_units:2, unit_name:"tranche" },
       { nom:"Œuf entier",        type:"fixe", prot:13, gluc:1,  lip:10, g_ref:50,  fixe_label:"1 œuf (fixe)" },
@@ -152,6 +159,7 @@ const RECETTES = [
     description:"L'omelette version dessert. Surprenant, mais ça marche.",
     note:"La banane bien mûre donne une texture fondante et sucre naturellement.",
     ingr:["oeuf"], tags:["sucre","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Œufs entiers",     type:"prot", prot:13, gluc:1,  lip:10, g_ref:50, egg:true  },
       { nom:"Blanc d'œuf",      type:"prot", prot:11, gluc:1,  lip:0,  g_ref:80  },
@@ -166,6 +174,7 @@ const RECETTES = [
     description:"Gâteau en bol au micro-ondes. Prêt en 90 secondes.",
     note:"Ne pas trop cuire — il doit rester légèrement humide au centre à la sortie du micro-ondes.",
     ingr:["avoine","oeuf"], tags:["sucre","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine",           type:"gluc", prot:13, gluc:68, lip:7,  g_ref:40  },
       { nom:"Œuf entier",                 type:"fixe", prot:13, gluc:1,  lip:10, g_ref:50,  fixe_label:"1 œuf (fixe)", egg:true },
@@ -183,6 +192,7 @@ const RECETTES = [
     description:"La base. Simple, efficace, modulable à l'infini.",
     note:"Consistance selon le ratio flocons/lait. Plus de lait = plus crémeux.",
     ingr:["avoine"], tags:["leger","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:60  },
       { nom:"Lait écrémé",      type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:200, max_g:350 },
@@ -197,6 +207,7 @@ const RECETTES = [
     description:"La collation de base. Zéro préparation, zéro excuse.",
     note:"Ajoute cannelle, extrait de vanille ou sucralose pour varier.",
     ingr:["avoine"], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Fromage blanc 0%", type:"prot", prot:8,  gluc:4,  lip:0,  g_ref:200 },
       { nom:"Flocons d'avoine", type:"gluc", prot:13, gluc:68, lip:7,  g_ref:40  },
@@ -210,6 +221,7 @@ const RECETTES = [
     description:"Option rapide si tu es en déplacement.",
     note:"Préfère les fruits entiers aux jus.",
     ingr:[], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Skyr nature",      type:"prot", prot:10, gluc:4,  lip:0,  g_ref:200 },
       { nom:"Whey protéine",    type:"prot", prot:80, gluc:5,  lip:2,  g_ref:20  },
@@ -225,6 +237,7 @@ const RECETTES = [
     description:"Batch cooking idéal. Prépare en grande quantité.",
     note:"Curry en poudre à volonté — zéro calorie. Légumes verts à volonté.",
     ingr:["poulet","riz"], tags:["familial","reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Blanc de poulet",  type:"prot", prot:25, gluc:0,  lip:1,  g_ref:140 },
       { nom:"Riz",              type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
@@ -240,6 +253,7 @@ const RECETTES = [
     description:"La vraie carbo... allégée. Et si t'es pas italien, la crème aussi 😄",
     note:"Mélange hors du feu OBLIGATOIRE — sinon l'œuf cuit et ça fait des œufs brouillés.",
     ingr:["pates","porc_jambon","oeuf","fromage"], tags:["reconfort","familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Allumettes bacon 3%", type:"prot", prot:17, gluc:0,  lip:3,  g_ref:100 },
       { nom:"Pâtes",               type:"gluc", prot:12, gluc:75, lip:1,  g_ref:80  },
@@ -256,6 +270,7 @@ const RECETTES = [
     description:"Le burger qui rentre dans le plan. Sauce zéro, cheddar, le vrai truc.",
     note:"Cuire les frites au four ou air fryer sans huile — ça change tout.",
     ingr:["boeuf","porc_jambon","pdt","fromage"], tags:["reconfort","familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Steak haché 5%",    type:"prot", prot:22, gluc:0,  lip:5,  g_ref:100 },
       { nom:"Bacon",             type:"prot", prot:20, gluc:0,  lip:10, g_ref:20  },
@@ -273,6 +288,7 @@ const RECETTES = [
     description:"La tortilla espagnole revisitée. Simple, goûteuse, batch-cookable.",
     note:"Cuisson douce et couvercle — la clé pour une tortilla bien cuite sans retourner.",
     ingr:["oeuf","pdt","fromage"], tags:["leger","familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Pommes de terre",    type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:200 },
       { nom:"Œufs entiers",       type:"prot", prot:13, gluc:1,  lip:10, g_ref:50, egg:true  },
@@ -288,6 +304,7 @@ const RECETTES = [
     description:"Version allégée du classique thaï. Savoureux et équilibré.",
     note:"La sauce soja sucrée remplace la sauce Pad Thai traditionnelle. Ajuste selon goût.",
     ingr:["poulet","oeuf"], tags:["rapide"],
+    temps:"t30",
     ingredients:[
       { nom:"Nouilles de riz",   type:"gluc", prot:3,  gluc:80, lip:0,  g_ref:70  },
       { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
@@ -304,6 +321,7 @@ const RECETTES = [
     description:"Frites air fryer + sauce fromagère maison. Le vrai truc.",
     note:"La sauce fromagère : crème 4% + comté râpé à feu doux — simple et efficace.",
     ingr:["poulet","pdt","fromage"], tags:["familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Blanc de poulet",  type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
       { nom:"Pommes de terre",  type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:150 },
@@ -320,6 +338,7 @@ const RECETTES = [
     description:"La carbo revisitée aux gnocchis. Encore plus réconfortante.",
     note:"Même règle que la pasta carbo : mélange HORS du feu obligatoire.",
     ingr:["pates","porc_jambon","oeuf","fromage"], tags:["reconfort"],
+    temps:"t15",
     ingredients:[
       { nom:"Gnocchis",            type:"gluc", prot:6,  gluc:55, lip:1,  g_ref:100 },
       { nom:"Allumettes bacon 3%", type:"prot", prot:17, gluc:0,  lip:3,  g_ref:100 },
@@ -336,6 +355,7 @@ const RECETTES = [
     description:"Le classique indestructible. Rapide, portable, aucune excuse.",
     note:"Privilégie le pain complet ou céréales pour l'index glycémique.",
     ingr:["porc_jambon","pain","fromage"], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Pain de mie complet La Boulangère", type:"gluc", prot:10, gluc:39, lip:1.9, g_ref:80  },
       { nom:"Jambon / blanc dinde", type:"prot", prot:18, gluc:0,  lip:2,  g_ref:100 },
@@ -351,6 +371,7 @@ const RECETTES = [
     description:"Street food version coaching. La sauce fromage blanc curry est une tuerie.",
     note:"La sauce est la clé — assaisonne bien avec curry, sel, citron.",
     ingr:["poulet","pain"], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Blanc de poulet",  type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
       { nom:"Pain pitta",       type:"fixe", prot:9,  gluc:55, lip:2,  g_ref:70,  unit_scalable:true, max_units:2, unit_name:"pitta" },
@@ -366,6 +387,7 @@ const RECETTES = [
     description:"Toute la gourmandise de la quiche, sans la pâte qui plombe les calories.",
     note:"Cuisson au four dans un plat huilé — pas besoin de pâte pour que ça tienne.",
     ingr:["oeuf","porc_jambon","fromage"], tags:["familial"],
+    temps:"t45",
     ingredients:[
       { nom:"Œufs entiers",      type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
       { nom:"Blanc d'œuf",       type:"prot", prot:11, gluc:1,  lip:0,  g_ref:100 },
@@ -381,6 +403,7 @@ const RECETTES = [
     description:"Le croustillant du granola sans le sucre caché du commerce.",
     note:"Toaster les flocons à sec fait toute la différence — ça donne le croquant du vrai granola.",
     ingr:["avoine"], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Yaourt grec 0%",    type:"prot", prot:10, gluc:4,  lip:0,  g_ref:200 },
       { nom:"Flocons d'avoine toastés", type:"gluc", prot:13, gluc:68, lip:7, g_ref:40 },
@@ -395,6 +418,7 @@ const RECETTES = [
     description:"Frais, coloré, ça change du poulet-riz habituel.",
     note:"Saumon cru façon poke si ultra-frais, sinon snacké 1 min par face à la poêle.",
     ingr:["poisson","riz"], tags:["leger","rapide"],
+    temps:"t15",
     ingredients:[
       { nom:"Saumon",            type:"prot", prot:20, gluc:0,  lip:13, g_ref:120 },
       { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
@@ -410,6 +434,7 @@ const RECETTES = [
     description:"Le curry version légère. Le lait de coco light change tout niveau calories.",
     note:"Ne pas faire bouillir le poisson trop longtemps — 8-10 min suffisent, sinon il devient sec.",
     ingr:["poisson","riz"], tags:["reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Cabillaud / colin", type:"prot", prot:18, gluc:0,  lip:1,  g_ref:150 },
       { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:100 },
@@ -425,6 +450,7 @@ const RECETTES = [
     description:"Rapide, savoureux, et les brocolis passent bien mieux comme ça.",
     note:"Cuisson à feu vif et rapide — le bœuf doit rester tendre, pas bouilli.",
     ingr:["boeuf","riz"], tags:["rapide","leger"],
+    temps:"t30",
     ingredients:[
       { nom:"Bœuf émincé 5%",    type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
       { nom:"Riz ou nouilles",   type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:90  },
@@ -440,6 +466,7 @@ const RECETTES = [
     description:"Épicé, coloré, ça sort du riz-poulet-curry classique.",
     note:"Les épices mexicaines font toute la différence — ne sois pas timide dessus.",
     ingr:["poulet","riz"], tags:["familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Blanc de poulet",   type:"prot", prot:25, gluc:0,  lip:1,  g_ref:130 },
       { nom:"Riz",               type:"gluc", prot:7,  gluc:77, lip:1,  g_ref:80  },
@@ -456,6 +483,7 @@ const RECETTES = [
     description:"Anti-gaspi et gourmand. Utilise le pain qui traîne, version dessert protéiné.",
     note:"Bien laisser le pain s'imbiber avant cuisson — c'est ce qui donne la texture fondante.",
     ingr:["pain","oeuf"], tags:["sucre","reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Pain de mie complet La Boulangère", type:"gluc", prot:10, gluc:39, lip:1.9, g_ref:60  },
       { nom:"Lait écrémé",       type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:150, max_g:250 },
@@ -471,6 +499,7 @@ const RECETTES = [
     description:"Le flan pâtissier version coaching. Simple, léger, ça tient bien en collation.",
     note:"Cuisson au bain-marie obligatoire — sinon le flan devient granuleux.",
     ingr:["oeuf"], tags:["sucre","leger"],
+    temps:"t45",
     ingredients:[
       { nom:"Œuf entier",        type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
       { nom:"Lait écrémé",       type:"gluc", prot:3,  gluc:5,  lip:0,  g_ref:250, max_g:350 },
@@ -485,6 +514,7 @@ const RECETTES = [
     description:"Le classique indémodable. Simple, efficace, tout le monde aime ça.",
     note:"Laisse mijoter la sauce au moins 15 min — plus elle mijote, plus elle est bonne.",
     ingr:["boeuf","pates"], tags:["familial","reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Bœuf haché 5%",     type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
       { nom:"Pâtes",             type:"gluc", prot:12, gluc:75, lip:1,  g_ref:80  },
@@ -500,6 +530,7 @@ const RECETTES = [
     description:"Le plat réconfortant par excellence, en version qui rentre dans le plan.",
     note:"Laisse reposer 5 min à la sortie du four avant de découper — ça tient mieux.",
     ingr:["boeuf","pates","fromage"], tags:["familial","reconfort"],
+    temps:"t45",
     ingredients:[
       { nom:"Bœuf haché 5%",       type:"prot", prot:22, gluc:0,  lip:5,  g_ref:120 },
       { nom:"Feuilles de lasagne", type:"gluc", prot:12, gluc:70, lip:1,  g_ref:70  },
@@ -515,6 +546,7 @@ const RECETTES = [
     description:"Pâtes + jambon + fromage gratiné. Le comfort food qui rentre dans les calories.",
     note:"Ne cuis pas les pâtes complètement — elles finissent de cuire au four.",
     ingr:["porc_jambon","pates","fromage"], tags:["reconfort","familial"],
+    temps:"t30",
     ingredients:[
       { nom:"Pâtes",              type:"gluc", prot:12, gluc:75, lip:1,  g_ref:90  },
       { nom:"Jambon / blanc dinde",type:"prot", prot:18, gluc:0,  lip:2,  g_ref:100 },
@@ -530,6 +562,7 @@ const RECETTES = [
     description:"Le classique français, avec du jambon pour en faire un repas complet.",
     note:"Coupe les pommes de terre le plus fin possible — c'est ce qui donne la texture fondante.",
     ingr:["porc_jambon","pdt","fromage"], tags:["reconfort","familial"],
+    temps:"t45",
     ingredients:[
       { nom:"Pommes de terre",     type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:250 },
       { nom:"Jambon / blanc dinde",type:"prot", prot:18, gluc:0,  lip:2,  g_ref:120 },
@@ -545,6 +578,7 @@ const RECETTES = [
     description:"Réconfortante, simple, et complète niveau macros malgré les apparences.",
     note:"Mixe partiellement pour garder un peu de texture, ou totalement pour un velouté.",
     ingr:["poulet","pdt"], tags:["leger","reconfort"],
+    temps:"t30",
     ingredients:[
       { nom:"Blanc de poulet",     type:"prot", prot:25, gluc:0,  lip:1,  g_ref:120 },
       { nom:"Pommes de terre",     type:"gluc", prot:2,  gluc:17, lip:0,  g_ref:150 },
@@ -560,6 +594,7 @@ const RECETTES = [
     description:"Le classique simple et rapide. Jaune coulant, mouillettes, rien de plus.",
     note:"3 min pour un jaune bien coulant, 5-6 min pour un jaune plus pris.",
     ingr:["oeuf","pain"], tags:["rapide","leger"],
+    temps:"t15",
     ingredients:[
       { nom:"Œufs entiers",  type:"prot", prot:13, gluc:1,  lip:10, g_ref:50,  egg:true },
       { nom:"Pain",          type:"gluc", prot:9,  gluc:46, lip:3,  g_ref:60  },
@@ -747,6 +782,32 @@ const TAGS_LIST = [
   { id:"sucre",     label:"Sucré",        emoji:"🍯" },
 ];
 
+const TEMPS_LIST = [
+  { id:"t15", label:"15 min",  emoji:"⏱️" },
+  { id:"t30", label:"30 min",  emoji:"⏱️" },
+  { id:"t45", label:"45 min+", emoji:"⏱️" },
+];
+
+// ── Substitutions — registre partagé par nom d'ingrédient ──
+// Chaque substitut doit rester dans le même rôle macro (prot/gluc/lip) que l'original.
+const SUBSTITUTIONS = {
+  "Blanc de poulet":        [{nom:"Dinde (escalope)",   prot:25, gluc:0,  lip:1 }, {nom:"Bœuf haché 5%",      prot:22, gluc:0,  lip:5 }],
+  "Steak haché 5%":         [{nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }, {nom:"Dinde hachée",       prot:24, gluc:0,  lip:3 }],
+  "Bœuf haché 5%":          [{nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }, {nom:"Bœuf haché 15%",     prot:20, gluc:0,  lip:15}],
+  "Bœuf émincé 5%":         [{nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }, {nom:"Porc émincé",        prot:21, gluc:0,  lip:7 }],
+  "Cabillaud / colin":      [{nom:"Saumon",             prot:20, gluc:0,  lip:13}, {nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }],
+  "Saumon":                 [{nom:"Cabillaud / colin",  prot:18, gluc:0,  lip:1 }, {nom:"Thon (boîte, eau)",  prot:26, gluc:0,  lip:1 }],
+  "Allumettes bacon 3%":    [{nom:"Jambon / blanc dinde",prot:18, gluc:0,  lip:2 }, {nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }],
+  "Jambon / blanc dinde":   [{nom:"Allumettes bacon 3%",prot:17, gluc:0,  lip:3 }, {nom:"Blanc de poulet",    prot:25, gluc:0,  lip:1 }],
+  "Riz":                    [{nom:"Pâtes",              prot:12, gluc:75, lip:1 }, {nom:"Quinoa",             prot:14, gluc:64, lip:6 }, {nom:"Semoule", prot:12, gluc:77, lip:1}],
+  "Pâtes":                  [{nom:"Riz",                prot:7,  gluc:77, lip:1 }, {nom:"Quinoa",             prot:14, gluc:64, lip:6 }],
+  "Pommes de terre":        [{nom:"Patate douce",       prot:2,  gluc:20, lip:0 }, {nom:"Riz",                prot:7,  gluc:77, lip:1 }],
+  "Fromage blanc 0%":       [{nom:"Skyr nature",         prot:10, gluc:4,  lip:0 }, {nom:"Yaourt grec 0%",     prot:9,  gluc:4,  lip:0 }],
+  "Skyr nature":            [{nom:"Fromage blanc 0%",   prot:8,  gluc:4,  lip:0 }, {nom:"Yaourt grec 0%",     prot:9,  gluc:4,  lip:0 }],
+  "Flocons d'avoine":       [{nom:"Son d'avoine",       prot:17, gluc:53, lip:8 }, {nom:"Muesli sans sucre",  prot:10, gluc:65, lip:6 }],
+  "Whey protéine":          [{nom:"Whey isolat",         prot:88, gluc:2,  lip:1 }],
+};
+
 // ── UI ──
 function MacroTag({val,col,label}) {
   return (
@@ -793,6 +854,7 @@ export default function App() {
   const [searchMode, setSearchMode] = useState(null);
   const [selectedIngr, setSelectedIngr] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTemps, setSelectedTemps] = useState([]);
   const [mealType,  setMealType]  = useState("");
   const [recetteId, setRecetteId] = useState("");
 
@@ -800,8 +862,17 @@ export default function App() {
   const [gluc, setGluc] = useState(70);
   const [lip,  setLip]  = useState(15);
 
-  const toggleIngr = (id) => setSelectedIngr(s => s.includes(id) ? s.filter(x=>x!==id) : [...s, id]);
-  const toggleTag  = (id) => setSelectedTags(s => s.includes(id) ? s.filter(x=>x!==id) : [...s, id]);
+  // Substitutions d'ingrédients (par index dans recette.ingredients d'origine)
+  const [substOverrides, setSubstOverrides] = useState({});
+  const [openSubstIdx, setOpenSubstIdx] = useState(null);
+
+  // Liste de courses — persiste entre les recettes
+  const [shoppingList, setShoppingList] = useState({});
+  const [showShoppingList, setShowShoppingList] = useState(false);
+
+  const toggleIngr  = (id) => setSelectedIngr(s => s.includes(id) ? s.filter(x=>x!==id) : [...s, id]);
+  const toggleTag   = (id) => setSelectedTags(s => s.includes(id) ? s.filter(x=>x!==id) : [...s, id]);
+  const toggleTemps = (id) => setSelectedTemps(s => s.includes(id) ? s.filter(x=>x!==id) : [...s, id]);
 
   const filteredByIngr = useMemo(() => {
     if (selectedIngr.length === 0) return [];
@@ -809,13 +880,33 @@ export default function App() {
   }, [selectedIngr]);
 
   const filteredByTags = useMemo(() => {
-    if (selectedTags.length === 0) return [];
-    return RECETTES.filter(r => r.tags && selectedTags.every(t => r.tags.includes(t)));
-  }, [selectedTags]);
+    if (selectedTags.length === 0 && selectedTemps.length === 0) return [];
+    return RECETTES.filter(r => {
+      const tagOk = selectedTags.length === 0 || (r.tags && selectedTags.every(t => r.tags.includes(t)));
+      const tempsOk = selectedTemps.length === 0 || selectedTemps.includes(r.temps);
+      return tagOk && tempsOk;
+    });
+  }, [selectedTags, selectedTemps]);
 
   const filteredMealType = useMemo(()=>mealType?RECETTES.filter(r=>r.category===mealType):[],[mealType]);
   const recette  = useMemo(()=>recetteId?RECETTES.find(r=>r.id===Number(recetteId)):null,[recetteId]);
-  const result   = useMemo(()=>recette?calcPortions(recette,prot,gluc,lip):null,[recette,prot,gluc,lip]);
+
+  // Réinitialiser les substitutions quand on change de recette
+  useEffect(() => { setSubstOverrides({}); setOpenSubstIdx(null); }, [recetteId]);
+
+  // Applique les substitutions choisies sur une copie de la recette
+  const effectiveRecette = useMemo(() => {
+    if (!recette) return null;
+    if (Object.keys(substOverrides).length === 0) return recette;
+    const ingredients = recette.ingredients.map((ing, idx) => {
+      const sub = substOverrides[idx];
+      if (!sub) return ing;
+      return { ...ing, nom: sub.nom, prot: sub.prot, gluc: sub.gluc, lip: sub.lip };
+    });
+    return { ...recette, ingredients };
+  }, [recette, substOverrides]);
+
+  const result   = useMemo(()=>effectiveRecette?calcPortions(effectiveRecette,prot,gluc,lip):null,[effectiveRecette,prot,gluc,lip]);
   const totaux   = useMemo(()=>result?.reduce((a,i)=>({
     prot:a.prot+i.prot_calc,gluc:a.gluc+i.gluc_calc,lip:a.lip+i.lip_calc,kcal:a.kcal+i.kcal_calc
   }),{prot:0,gluc:0,lip:0,kcal:0}),[result]);
@@ -824,9 +915,46 @@ export default function App() {
   const tc = t=>t==="prot"?RED_BRIGHT:t==="gluc"?STEEL_LIGHT:t==="lip"?GOLD:GRAY;
 
   const resetSearch = () => {
-    setSearchMode(null); setSelectedIngr([]); setSelectedTags([]);
+    setSearchMode(null); setSelectedIngr([]); setSelectedTags([]); setSelectedTemps([]);
     setMealType(""); setRecetteId("");
   };
+
+  // ── Liste de courses ──
+  const addToShoppingList = () => {
+    if (!result) return;
+    setShoppingList(prev => {
+      const next = {...prev};
+      result.forEach(ing => {
+        if (ing.type === "libre") {
+          const key = `libre:${ing.nom}`;
+          next[key] = { nom: ing.nom, detail: "à volonté", count: (next[key]?.count||0) + 1 };
+          return;
+        }
+        let detail;
+        if (ing.egg) {
+          const n = Math.max(1, Math.round(ing.g_calc/50));
+          detail = `${n} œuf${n>1?'s':''}`;
+        } else if (ing.units && ing.unit_name) {
+          detail = `${ing.units} ${ing.unit_name}${ing.units>1?'s':''} (${ing.g_calc}g)`;
+        } else {
+          detail = `${ing.g_calc}g`;
+        }
+        const key = `${ing.nom}|${detail}`;
+        next[key] = { nom: ing.nom, detail, count: (next[key]?.count||0) + 1 };
+      });
+      return next;
+    });
+    setShowShoppingList(true);
+  };
+  const removeFromShoppingList = (key) => setShoppingList(prev => {
+    const next = {...prev}; delete next[key]; return next;
+  });
+  const clearShoppingList = () => setShoppingList({});
+  const shoppingCount = Object.keys(shoppingList).length;
+
+  // ── Export PDF (impression navigateur) ──
+  const exportPDF = () => window.print();
+
 
   const ModeButton = ({ id, emoji, label }) => {
     const [hover, setHover] = useState(false);
@@ -850,6 +978,15 @@ export default function App() {
 
   return (
     <div style={{background:DARK,minHeight:"100vh",color:WHITE,fontFamily:F_BODY}}>
+      <style>{`
+        @media print {
+          body * { visibility: hidden; }
+          #print-area, #print-area * { visibility: visible; }
+          #print-area { position: absolute; left: 0; top: 0; width: 100%; background: white !important; }
+          #print-area * { background: white !important; color: black !important; border-color: #ccc !important; box-shadow: none !important; text-shadow: none !important; }
+          .no-print { display: none !important; }
+        }
+      `}</style>
 
       {/* ── HEADER ── */}
       <div style={{
@@ -865,6 +1002,18 @@ export default function App() {
           background:"radial-gradient(ellipse at center, rgba(94,22,34,0.35) 0%, rgba(0,0,0,0) 70%)",
           pointerEvents:"none"
         }} />
+        <button className="no-print" onClick={()=>setShowShoppingList(true)} style={{
+          position:"absolute", top:20, right:20, zIndex:2,
+          background:STONE_MID, border:`1px solid ${STONE_LIGHT}`, borderRadius:6,
+          padding:"8px 12px", color:WHITE, cursor:"pointer", fontSize:16,
+          display:"flex", alignItems:"center", gap:6,
+        }}>
+          🛒
+          {shoppingCount>0 && (
+            <span style={{background:RED_BRIGHT, color:WHITE, borderRadius:10, fontSize:10, fontWeight:700,
+              padding:"1px 6px", fontFamily:F_CONDENSED}}>{shoppingCount}</span>
+          )}
+        </button>
         <div style={{fontFamily:F_CONDENSED,fontSize:10,color:RED_BRIGHT,fontWeight:700,letterSpacing:"0.25em",marginBottom:8,position:"relative"}}>VULKAN COACHING</div>
         <div style={{
           fontFamily:F_DISPLAY, fontSize:"clamp(22px,5vw,32px)", fontWeight:700, color:WHITE,
@@ -873,6 +1022,48 @@ export default function App() {
         }}>Trouve ta recette</div>
         <div style={{fontFamily:F_BODY,fontSize:12,color:GRAY,marginTop:8,position:"relative",maxWidth:420}}>Par ingrédients, par envie, ou directement — puis calcule tes portions exactes.</div>
       </div>
+
+      {/* ── PANNEAU LISTE DE COURSES ── */}
+      {showShoppingList && (
+        <div className="no-print" onClick={()=>setShowShoppingList(false)} style={{
+          position:"fixed", inset:0, background:"rgba(0,0,0,0.75)", zIndex:50,
+          display:"flex", alignItems:"center", justifyContent:"center", padding:20,
+        }}>
+          <div onClick={e=>e.stopPropagation()} style={{
+            background:STONE_MID, border:`1px solid ${STONE_LIGHT}`, borderTop:`2px solid ${GOLD}`,
+            borderRadius:6, padding:"20px 22px", maxWidth:420, width:"100%", maxHeight:"80vh", overflowY:"auto",
+            boxShadow:SHADOW_LG,
+          }}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+              <div style={{fontFamily:F_CONDENSED,fontSize:15,fontWeight:700,color:WHITE,letterSpacing:"0.04em",textTransform:"uppercase"}}>🛒 Ma liste de courses</div>
+              <button onClick={()=>setShowShoppingList(false)} style={{background:"none",border:"none",color:GRAY,fontSize:18,cursor:"pointer"}}>✕</button>
+            </div>
+            {shoppingCount===0 ? (
+              <div style={{fontSize:12,color:GRAY_DIM,fontStyle:"italic"}}>Ta liste est vide. Calcule une recette puis clique "Ajouter à ma liste".</div>
+            ) : (
+              <>
+                <div style={{display:"grid",gap:8,marginBottom:16}}>
+                  {Object.entries(shoppingList).map(([key,item])=>(
+                    <div key={key} style={{display:"flex",justifyContent:"space-between",alignItems:"center",
+                      background:INK,border:`1px solid ${STONE_LIGHT}`,borderRadius:4,padding:"9px 12px"}}>
+                      <div>
+                        <div style={{fontSize:12,color:WHITE,fontWeight:600}}>{item.nom}</div>
+                        <div style={{fontSize:10,color:GRAY}}>{item.detail}{item.count>1?`  ×${item.count}`:""}</div>
+                      </div>
+                      <button onClick={()=>removeFromShoppingList(key)} style={{background:"none",border:"none",color:RED_BRIGHT,fontSize:14,cursor:"pointer"}}>✕</button>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={clearShoppingList} style={{
+                  width:"100%", padding:"10px", borderRadius:4, border:`1px solid ${RED_BRIGHT}`,
+                  background:"transparent", color:RED_BRIGHT, fontSize:11, fontWeight:700, fontFamily:F_CONDENSED,
+                  letterSpacing:"0.05em", textTransform:"uppercase", cursor:"pointer",
+                }}>Vider la liste</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <div style={{padding:"26px 24px 56px",maxWidth:640,margin:"0 auto"}}>
 
@@ -911,12 +1102,18 @@ export default function App() {
         {searchMode==="envie" && !recette && (
           <div style={{marginBottom:30}}>
             <div style={{fontSize:12,color:GRAY,marginBottom:14,fontFamily:F_BODY}}>T'as envie de quoi ?</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:22}}>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:18}}>
               {TAGS_LIST.map(t=>(
                 <ToggleChip key={t.id} active={selectedTags.includes(t.id)} onClick={()=>toggleTag(t.id)} emoji={t.emoji} label={t.label} />
               ))}
             </div>
-            {selectedTags.length>0 && (
+            <div style={{fontSize:11,color:GRAY_MUTED,marginBottom:10,fontFamily:F_CONDENSED,letterSpacing:"0.06em",textTransform:"uppercase"}}>Temps de préparation</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:22}}>
+              {TEMPS_LIST.map(t=>(
+                <ToggleChip key={t.id} active={selectedTemps.includes(t.id)} onClick={()=>toggleTemps(t.id)} emoji={t.emoji} label={t.label} />
+              ))}
+            </div>
+            {(selectedTags.length>0 || selectedTemps.length>0) && (
               <div>
                 <div style={{fontFamily:F_CONDENSED,fontSize:11,color:RED_BRIGHT,fontWeight:700,marginBottom:12,letterSpacing:"0.08em",textTransform:"uppercase"}}>
                   {filteredByTags.length} recette{filteredByTags.length>1?"s":""} trouvée{filteredByTags.length>1?"s":""}
@@ -1019,7 +1216,7 @@ export default function App() {
 
         {/* ── 3# RÉSULTAT ── */}
         {recette&&result&&totaux&&(
-          <div>
+          <div id="print-area">
             <SectionLabel num="3" text={`Tes portions — ${recette.nom}`} />
 
             <div style={{background:STONE_MID,border:`1px solid ${STONE_LIGHT}`,borderLeft:`2px solid ${GOLD}`,borderRadius:4,
@@ -1035,15 +1232,41 @@ export default function App() {
                     textAlign:h==="INGRÉDIENT"?"left":"center"}}>{h}</div>
                 ))}
               </div>
-              {result.map((ing,i)=>(
+              {result.map((ing,i)=>{
+                const canSubstitute = ing.type!=="libre" && ing.type!=="fixe" && SUBSTITUTIONS[recette.ingredients[i].nom];
+                return (
                 <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 90px 44px 44px 44px 54px",
                   gap:4,padding:"10px 15px",alignItems:"center",
                   borderBottom:i<result.length-1?`1px solid ${STONE}`:"none",
                   background:i%2===0?STONE_MID:STONE_DEEP}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:600,color:ing.type==="libre"?GRAY_DIM:ing.type==="fixe"?GRAY:WHITE,fontFamily:F_BODY}}>{ing.nom}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:6}}>
+                      <div style={{fontSize:11,fontWeight:600,color:ing.type==="libre"?GRAY_DIM:ing.type==="fixe"?GRAY:WHITE,fontFamily:F_BODY}}>{ing.nom}</div>
+                      {canSubstitute && (
+                        <button onClick={()=>setOpenSubstIdx(openSubstIdx===i?null:i)} title="Remplacer cet ingrédient"
+                          style={{background:"none",border:"none",color:GOLD,cursor:"pointer",fontSize:11,padding:0,lineHeight:1}}>🔄</button>
+                      )}
+                    </div>
                     {ing.hit_max&&<div style={{fontSize:8,color:GOLD,marginTop:1}}>⚠ plafond {ing.max_g}g</div>}
                     {ing.type==="fixe"&&<div style={{fontSize:8,color:GRAY_DIM,marginTop:1}}>fixe</div>}
+                    {openSubstIdx===i && canSubstitute && (
+                      <div style={{marginTop:7,display:"flex",gap:6,flexWrap:"wrap"}}>
+                        {SUBSTITUTIONS[recette.ingredients[i].nom].map((s,si)=>(
+                          <button key={si} onClick={()=>{ setSubstOverrides(prev=>({...prev,[i]:s})); setOpenSubstIdx(null); }}
+                            style={{fontSize:9,padding:"4px 9px",borderRadius:12,border:`1px solid ${STONE_LIGHT}`,
+                              background:INK,color:GRAY,cursor:"pointer",fontFamily:F_BODY}}>
+                            {s.nom}
+                          </button>
+                        ))}
+                        {substOverrides[i] && (
+                          <button onClick={()=>{ setSubstOverrides(prev=>{const n={...prev}; delete n[i]; return n;}); setOpenSubstIdx(null); }}
+                            style={{fontSize:9,padding:"4px 9px",borderRadius:12,border:`1px solid ${RED_BRIGHT}`,
+                              background:"transparent",color:RED_BRIGHT,cursor:"pointer",fontFamily:F_BODY}}>
+                            ↩ Original
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div style={{textAlign:"center"}}>
                     {ing.type==="libre"
@@ -1060,7 +1283,8 @@ export default function App() {
                       color:ing.type==="libre"?GRAY_DIM:v>0?GRAY:GRAY_DIM,fontWeight:v>0?600:400}}>{v>0?v:"—"}</div>
                   ))}
                 </div>
-              ))}
+                );
+              })}
               <div style={{display:"grid",gridTemplateColumns:"1fr 90px 44px 44px 44px 54px",
                 gap:4,padding:"11px 15px",background:INK,borderTop:`2px solid ${RED_BRIGHT}`}}>
                 <div style={{fontSize:11,fontWeight:700,color:WHITE,gridColumn:"1/3",fontFamily:F_CONDENSED,letterSpacing:"0.05em",textTransform:"uppercase"}}>Total</div>
@@ -1115,6 +1339,20 @@ export default function App() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Actions — masquées à l'impression */}
+            <div className="no-print" style={{display:"flex",gap:10,marginTop:16,flexWrap:"wrap"}}>
+              <button onClick={addToShoppingList} style={{
+                flex:"1 1 auto", padding:"11px 16px", borderRadius:4, border:`1px solid ${STONE_LIGHT}`,
+                background:STONE_MID, color:WHITE, fontSize:12, fontWeight:700, fontFamily:F_CONDENSED,
+                letterSpacing:"0.04em", textTransform:"uppercase", cursor:"pointer",
+              }}>🛒 Ajouter à ma liste</button>
+              <button onClick={exportPDF} style={{
+                flex:"1 1 auto", padding:"11px 16px", borderRadius:4, border:`1px solid ${RED_BRIGHT}`,
+                background:"transparent", color:RED_BRIGHT, fontSize:12, fontWeight:700, fontFamily:F_CONDENSED,
+                letterSpacing:"0.04em", textTransform:"uppercase", cursor:"pointer",
+              }}>📄 Exporter en PDF</button>
             </div>
           </div>
         )}
